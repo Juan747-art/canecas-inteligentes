@@ -1,18 +1,47 @@
-# Power BI: visuales por crear o ajustar y actualización de los datos
+# Power BI: qué conservar, qué ajustar y qué falta en «Tablero Vertedero»
 
-El archivo `Tablero Vertedero.pbix` tiene hoy tres páginas («Estado actual», «Page 1» y «Page 2») y una tabla `Medidas`. Esta lista indica qué crear o ajustar para que el dashboard cumpla el punto 3 de la guía y coincida con los análisis del sitio.
+Esta guía parte del avance que ya tiene `Tablero Vertedero.pbix` (guardado el 7 de noviembre de 2026). El archivo tiene 3 páginas con 18 visuales y una tabla `Medidas` con 12 medidas. La lista sale de leer el propio archivo:
 
-## Antes de empezar
+- **Medidas que ya existen:** `Llenado actual %`, `Llenado promedio %`, `Lecturas`, `% lecturas válidas`, `Aperturas`, `Bloqueos por caneca llena`, `Alarmas`, `Horas en alarma`, `Peso actual (g)`, `Peso promedio (g)`, `Peso máximo (g)` y `Gramos por punto de llenado`.
 
-- **Filtro de período.** En cada página de análisis, en el panel Filtros → «Filtros de esta página», arrastre `DimFecha[fecha]` y deje «está entre 27/09/2026 y 04/11/2026». Así los valores coinciden con el sitio (período simulado).
-- **Subtítulo de todos los visuales de análisis:** `Período simulado: 27 sep – 4 nov 2026`.
-- **Renombrar páginas:** «Page 1» → `Uso y llenado`; «Page 2» → `Bloqueos y alarmas`.
-- **Medidas nuevas** (Inicio → Nueva medida, en la tabla `Medidas`):
+La mayor parte del dashboard ya está hecha. Para cumplir el punto 3 de la guía y coincidir con el sitio hay que:
+
+- ajustar títulos y algunos campos de lo que ya existe;
+- agregar **5 visuales nuevos**.
+
+## 1. Lo que ya tienen
+
+| Página | Visual existente | Qué hacer | Cumple en el sitio |
+|---|---|---|---|
+| Estado actual | 3 medidores `[Llenado actual %]` (C1, C2, C3) | **Conservar.** Corregir títulos: `C1 · Aprovechables`, `C2 · No aprovechables`, `C3 · Orgánicos` (sin punto final). | Estado en vivo |
+| Estado actual | Tarjeta: `Peso actual (g)`, `% lecturas válidas`, `Horas en alarma`, `Alarmas` | **Conservar.** Renombrar el campo de peso a «Peso simulado (g)». | Apoyo |
+| Estado actual | Segmentaciones de fecha y caneca | **Conservar.** | Filtros |
+| Page 1 | Barras: `[Bloqueos por caneca llena]` por caneca | **Conservar.** Título: «Bloqueos por caneca (cantidad)». | Apoyo del indicador 4 |
+| Page 1 | Columnas: `[Aperturas]` por `hora_texto`, con leyenda por caneca | **Ajustar:** quitar `DimCaneca[nombre]` de Leyenda. Título: «Aperturas por hora del día (cantidad)». | **Univariado 3** |
+| Page 1 | Líneas «Llenado promedio por hora.» (leyenda por caneca) | **Conservar.** Título: «Llenado promedio por hora y caneca (%)». | **Bivariado 3** |
+| Page 1 | Líneas «Llenado promedio por día.» | **Conservar.** Título: «Llenado promedio por día y caneca (%)». | Apoyo (tendencia) |
+| Page 1 | Matriz: `[Aperturas]` por día de la semana × franja | **Conservar.** Título: «Aperturas por día de la semana y franja (cantidad)». | Apoyo de la decisión 2 |
+| Page 1 | Segmentaciones de fecha y caneca | **Conservar.** Agregar una de `DimFecha[tipo_dia]`. | Filtros |
+| Page 2 | Columnas: `[Alarmas]` por día de la semana | **Reutilizar** para el bivariado 2 (ver abajo): con solo 3 alarmas este gráfico no informa mucho. | **Bivariado 2** |
+| Page 2 | Tarjeta: `[Alarmas]`, `[Horas en alarma]` | **Ajustar:** agregar `[Horas promedio de alarma]`. Título: «Alarmas conjuntas y duración (h)». | **Indicador 5** |
+| Page 2 | Tabla de alarmas | **Ajustar:** quitar las jerarquías de fecha (en cada campo de fecha, flecha → elegir `fecha_inicio`/`fecha_fin` en vez de «Jerarquía de fechas») y poner `pct_c1..3` en «No resumir». Título: «Alarmas conjuntas: inicio, fin, duración (min) y llenado (%)». | Apoyo del indicador 5 |
+| Page 2 | Anillo: `[Lecturas]` por estado de llenado | **Conservar.** Título: «Lecturas por estado de llenado (% de las lecturas)». | Apoyo del indicador 2 |
+| Page 2 | Dispersión llenado–peso, tarjeta «Gramos por punto», columnas «Peso máximo» | **Opcional.** El peso es simulado y se calcula a partir del llenado, así que no aporta a los conocimientos. Si los conservan, titúlenlos con «Peso simulado (g)». | — |
+
+## 2. Antes de lo nuevo
+
+- **Renombrar páginas** (doble clic en la pestaña): «Page 1» → `Uso y llenado`; «Page 2» → `Bloqueos y alarmas`.
+- **Filtro de período** en «Uso y llenado» y «Bloqueos y alarmas»:
+  1. Abrir el panel Filtros y, en «Filtros de esta página», arrastrar `DimFecha[fecha]`.
+  2. Elegir «Filtrado avanzado → es posterior o igual a 27/09/2026 y es anterior o igual a 04/11/2026».
+  3. «Estado actual» **no** lleva este filtro.
+- **Subtítulo** de los visuales de esas dos páginas: `Período simulado: 27 sep – 4 nov 2026` (Formato → General → Título → Subtítulo).
+- **Ordenar** `DimHora[hora_texto]` por `hora_key` y `DimFecha[nombre_dia]` por `dia_semana` (vista Datos → seleccionar la columna → Herramientas de columnas → Ordenar por columna).
+- **Medidas nuevas** (clic derecho en la tabla `Medidas` → Nueva medida, una por una):
 
 ```DAX
-Bloqueos = CALCULATE ( SUM ( FactEventos[cantidad] ), DimTipoEvento[tipo] = "bloqueo_llena" )
 Intentos = CALCULATE ( SUM ( FactEventos[cantidad] ), DimTipoEvento[tipo] IN { "apertura", "bloqueo_llena" } )
-Tasa de bloqueo % = DIVIDE ( [Bloqueos], [Intentos] ) * 100
+Tasa de bloqueo % = DIVIDE ( [Bloqueos por caneca llena], [Intentos] ) * 100
 Días con datos = DISTINCTCOUNT ( FactLecturas[fecha_key] )
 Aperturas por día = DIVIDE ( [Aperturas], [Días con datos] )
 % lecturas ≥ 90 = DIVIDE ( CALCULATE ( COUNTROWS ( FactLecturas ), FactLecturas[porcentaje] >= 90 ), COUNTROWS ( FactLecturas ) ) * 100
@@ -20,49 +49,33 @@ Mediana de llenado % = MEDIAN ( FactLecturas[porcentaje] )
 Horas promedio de alarma = DIVIDE ( SUM ( FactAlarmas[duracion_min] ), 60 * COUNTROWS ( FactAlarmas ) )
 ```
 
-Si ya existe `Bloqueos por caneca llena`, puede usarla en lugar de `Bloqueos`. Compruebe que `[Aperturas]` cuenta solo eventos de tipo `apertura`.
-
-- **Columna nueva** en `FactLecturas` (para el histograma):
+- **Columna nueva** en `FactLecturas`, para el histograma (vista Datos → `FactLecturas` → Nueva columna):
 
 ```DAX
 Tramo de llenado = IF ( FactLecturas[porcentaje] >= 90, "90-100", FORMAT ( INT ( FactLecturas[porcentaje] / 10 ) * 10, "00" ) & "-" & FORMAT ( INT ( FactLecturas[porcentaje] / 10 ) * 10 + 9, "00" ) )
 ```
 
-## Página «Uso y llenado»
+Al terminar, comparen con los **valores de control** del final. Si `[Aperturas]` o `[Bloqueos por caneca llena]` no dan 3.643 y 209 con el filtro del período, revisen su fórmula: deben sumar solo los eventos de tipo `apertura` y `bloqueo_llena`, respectivamente.
 
-| # | Cumple | Tipo de visual | Campos | Título |
-|---|---|---|---|---|
-| 1 | Indicador 1 | Tarjeta | `[Llenado promedio %]` | Llenado promedio (%) |
-| 2 | Indicador 2 | Tarjeta | `[% lecturas ≥ 90]` | Lecturas en estado crítico, ≥ 90 % (% de las lecturas) |
-| 3 | Indicador 3 | Tarjeta | `[Aperturas por día]` | Aperturas de tapa por día |
-| 4 | Indicador 4 | Tarjeta | `[Tasa de bloqueo %]` | Tasa de bloqueo (% de los intentos) |
-| 5 | Indicador 5 | Tarjeta (2 campos) | `[Alarmas]`, `[Horas promedio de alarma]` | Alarmas conjuntas y duración promedio (h) |
-| 6 | Univariado 1 | Gráfico de columnas agrupadas | Eje X: `FactLecturas[Tramo de llenado]` · Eje Y: `[Lecturas]` mostrado como «% del total general» | Distribución del llenado (% de las lecturas por tramo) |
-| 7 | Univariado 3 | Columnas agrupadas (**ajustar** el existente: quitar `DimCaneca[nombre]` de Leyenda) | Eje X: `DimHora[hora_texto]` · Eje Y: `[Aperturas]` | Aperturas por hora del día (cantidad) |
-| 8 | Bivariado 3 | Gráfico de líneas (**ya existe**: «Llenado promedio por hora») | Eje X: `DimHora[hora_texto]` · Leyenda: `DimCaneca[nombre]` · Eje Y: `[Llenado promedio %]` | Llenado promedio por hora y caneca (%) |
-| 9 | Bivariado 1 | Columnas agrupadas | Eje X: `DimCaneca[nombre]` · Eje Y: `[Llenado promedio %]`, `[Mediana de llenado %]`, `[% lecturas ≥ 90]` | Llenado por caneca: promedio, mediana y tiempo crítico (%) |
-| 10 | Filtros | Segmentaciones (**ya existen**) | `DimCaneca[nombre]`; `DimFecha[tipo_dia]` (nueva) | — |
+## 3. Lo que falta: 5 visuales nuevos y 1 reutilizado
 
-Ordene `hora_texto` por `hora_key` (Herramientas de columnas → Ordenar por columna).
+| # | Página | Cumple | Tipo de visual | Campos | Título |
+|---|---|---|---|---|---|
+| N1 | Uso y llenado | **Indicadores 1 a 4** | Tarjeta (nueva, el mismo tipo de su tarjeta de «Estado actual») | `[Llenado promedio %]`, `[% lecturas ≥ 90]`, `[Aperturas por día]`, `[Tasa de bloqueo %]` | Indicadores del período |
+| N2 | Uso y llenado | **Univariado 1** | Columnas agrupadas | Eje X: `FactLecturas[Tramo de llenado]` · Eje Y: `[Lecturas]`; en el campo del eje Y: flecha → Mostrar valor como → Porcentaje del total general | Distribución del llenado (% de las lecturas por tramo) |
+| N3 | Uso y llenado | **Bivariado 1** | Columnas agrupadas | Eje X: `DimCaneca[nombre]` · Eje Y: `[Llenado promedio %]`, `[Mediana de llenado %]`, `[% lecturas ≥ 90]` | Llenado por caneca: promedio, mediana y tiempo crítico (%) |
+| N4 | Bloqueos y alarmas | **Univariado 2** | Barras agrupadas | Eje Y: `DimTipoEvento[tipo]` · Eje X: `FactEventos[cantidad]` (Suma), con etiquetas de datos | Eventos por tipo (cantidad) |
+| N5 | Bloqueos y alarmas | **Multivariado** | Matriz | Filas: `DimCaneca[nombre]` y debajo `DimFecha[tipo_dia]` · Columnas: `DimHora[franja]` · Valores: `[Tasa de bloqueo %]`, `[Bloqueos por caneca llena]`, `[Aperturas]` · Formato → Elementos de celda → Color de fondo activado sobre `[Tasa de bloqueo %]` | Tasa de bloqueo por caneca, franja horaria y tipo de día (%) |
+| R1 | Bloqueos y alarmas | **Bivariado 2** | Seleccionar el gráfico existente «Alarmas por día» y cambiarlo a **Gráfico de columnas agrupadas y de líneas** | Eje X: `DimFecha[nombre_dia]` · Eje Y (columnas): `[Bloqueos por caneca llena]` en lugar de `[Alarmas]` · Eje Y de línea: `[Tasa de bloqueo %]` | Bloqueos por día de la semana (cantidad y % de los intentos) |
 
-## Página «Bloqueos y alarmas»
+- En la matriz N5, expandan las filas al segundo nivel (botón de dos flechas hacia abajo, arriba del visual) para ver las 24 combinaciones.
+- Para que la franja salga en orden (Madrugada, Mañana, Tarde, Noche): en `DimHora` creen la columna `Orden franja = SWITCH ( DimHora[franja], "Madrugada", 1, "Mañana", 2, "Tarde", 3, "Noche", 4, 0 )` y ordenen `franja` por `Orden franja`.
+- Las celdas de madrugada tienen muy pocos intentos: por eso la matriz muestra también bloqueos y aperturas.
 
-| # | Cumple | Tipo de visual | Campos | Título |
-|---|---|---|---|---|
-| 11 | Univariado 2 | Gráfico de barras agrupadas | Eje Y: `DimTipoEvento[tipo]` · Eje X: `SUM(FactEventos[cantidad])` con etiquetas de datos | Eventos por tipo (cantidad) |
-| 12 | Bivariado 2 | Columnas agrupadas y de líneas | Eje X: `DimFecha[nombre_dia]` (ordenado por `dia_semana`) · Columnas: `[Bloqueos]` · Línea: `[Tasa de bloqueo %]` | Bloqueos por día de la semana (cantidad y % de los intentos) |
-| 13 | **Multivariado** | Matriz | Filas: `DimCaneca[nombre]`, luego `DimFecha[tipo_dia]` · Columnas: `DimHora[franja]` (ordenada: Madrugada, Mañana, Tarde, Noche) · Valores: `[Tasa de bloqueo %]`, `[Bloqueos]`, `[Aperturas]` · Formato condicional de fondo sobre `[Tasa de bloqueo %]` | Tasa de bloqueo por caneca, franja horaria y tipo de día (%) |
-| 14 | Apoyo | Tabla (**ajustar** la existente) | `FactAlarmas[fecha_inicio]`, `[fecha_fin]` (como fecha y hora, sin jerarquía), `duracion_min`, `pct_c1`, `pct_c2`, `pct_c3` (sin resumir) | Alarmas conjuntas: inicio, fin, duración (min) y llenado (%) |
-| 15 | Apoyo | Anillo (**ya existe**) | `DimEstadoLlenado[estado]`, `[Lecturas]` | Lecturas por estado de llenado (% de las lecturas) |
+## 4. Página «Estado actual»
 
-En la matriz (13), expanda las filas hasta el segundo nivel para que se vean las 24 combinaciones. Las celdas de madrugada tienen muy pocos intentos: por eso se muestran también `[Bloqueos]` y `[Aperturas]`.
-
-## Página «Estado actual»
-
-- Póngale el subtítulo `Última lectura cargada en el data warehouse` y agregue una tarjeta con `MAX(FactLecturas[fecha_hora])` titulada «Fecha y hora de la última lectura».
-- Corrija los títulos de los medidores (`C3 · Orgánicos`, sin punto final).
-- Esta página **no** debe llevar el filtro del período simulado.
-- Los gráficos de peso de «Page 2» (dispersión llenado-peso, gramos por punto, peso máximo) muestran una variable simulada y calculada a partir del llenado. Si los conserva, titule «Peso simulado (g)»; no aportan a los conocimientos del sitio.
+- Subtítulo de la página: `Última lectura cargada en el data warehouse`.
+- Agregar una tarjeta con `FactLecturas[fecha_hora]` (flecha del campo → Máximo), titulada «Fecha y hora de la última lectura». Con el ETL cada 5 minutos, esta fecha muestra qué tan al día está el informe.
 
 ## Valores de control (deben coincidir con el sitio)
 
