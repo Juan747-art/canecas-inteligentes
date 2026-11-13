@@ -171,8 +171,14 @@
       fig.innerHTML = `<div class="hueco">Pendiente<br><code>${archivo}</code></div><figcaption>${desc}</figcaption>`;
       const img = new Image();
       img.alt = desc;
-      img.onload = () => { fig.className = "evidencia"; fig.querySelector(".hueco").replaceWith(img); actualizarConteo(); };
       img.src = "img/evidencias/" + archivo;
+      img.onload = () => {
+        const a = document.createElement("a");
+        a.href = img.src; a.target = "_blank"; a.rel = "noopener";
+        a.title = "Abrir la imagen en tamaño completo";
+        a.appendChild(img);
+        fig.className = "evidencia"; fig.querySelector(".hueco").replaceWith(a); actualizarConteo();
+      };
       host.appendChild(fig);
     });
     actualizarConteo();
