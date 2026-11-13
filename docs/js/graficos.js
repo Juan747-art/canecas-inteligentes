@@ -171,7 +171,6 @@
       fig.innerHTML = `<div class="hueco">Pendiente<br><code>${archivo}</code></div><figcaption>${desc}</figcaption>`;
       const img = new Image();
       img.alt = desc;
-      img.loading = "lazy";
       img.onload = () => { fig.className = "evidencia"; fig.querySelector(".hueco").replaceWith(img); actualizarConteo(); };
       img.src = "img/evidencias/" + archivo;
       host.appendChild(fig);
@@ -189,7 +188,7 @@
     if (nota) nota.textContent = POWERBI_ACTUALIZACION;
     if (!host) return;
     if (POWERBI_URL && /^https:\/\/app\.powerbi\.com\//.test(POWERBI_URL)) {
-      host.innerHTML = `<iframe title="Dashboard Canecas Inteligentes en Power BI" src="${POWERBI_URL}" allowfullscreen loading="lazy"></iframe>`;
+      host.innerHTML = `<iframe title="Dashboard de Ciudad Inteligente (módulo vertedero) en Power BI" src="${POWERBI_URL}" allowfullscreen loading="lazy"></iframe>`;
     } else {
       host.innerHTML = `<div class="pbi-pendiente"><strong>Dashboard pendiente de integrar</strong><p>Aquí se mostrará el informe interactivo de Power BI cuando se publique con «Publicar en la web» y se pegue su URL en <code>docs/js/config.js</code>.</p></div>`;
     }
