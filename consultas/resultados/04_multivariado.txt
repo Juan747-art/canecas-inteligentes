@@ -1,0 +1,27 @@
+﻿Changed database context to 'VertederoDW'.
+caneca|franja|tipo_dia|dias|lecturas|llenado_promedio_pct|pct_lecturas_90_o_mas|aperturas|aperturas_por_dia|bloqueos|bloqueos_por_dia|tasa_bloqueo_pct
+------|------|--------|----|--------|--------------------|---------------------|---------|-----------------|--------|----------------|----------------
+C1|Madrugada|Laborable|28|60480|88.24|59.71|9|.32|4|.14|30.77
+C1|Madrugada|Fin de semana|11|23760|65.25|9.08|2|.18|0|.00|.00
+C1|Mañana|Laborable|28|60480|19.71|.00|367|13.11|0|.00|.00
+C1|Mañana|Fin de semana|11|23760|40.63|.00|101|9.18|0|.00|.00
+C1|Tarde|Laborable|28|59014|54.06|1.93|404|14.43|2|.07|.49
+C1|Tarde|Fin de semana|11|23760|62.67|31.62|97|8.82|14|1.27|12.61
+C1|Noche|Laborable|27|58320|81.87|35.00|223|8.26|29|1.07|11.51
+C1|Noche|Fin de semana|11|23760|75.62|36.36|35|3.18|17|1.55|32.69
+C2|Madrugada|Laborable|28|60480|72.51|10.71|13|.46|0|.00|.00
+C2|Madrugada|Fin de semana|11|23760|61.28|9.09|2|.18|0|.00|.00
+C2|Mañana|Laborable|28|60480|16.01|.00|284|10.14|0|.00|.00
+C2|Mañana|Fin de semana|11|23760|34.57|.35|80|7.27|0|.00|.00
+C2|Tarde|Laborable|28|59013|42.83|.24|301|10.75|1|.04|.33
+C2|Tarde|Fin de semana|11|23760|53.29|15.40|72|6.55|7|.64|8.86
+C2|Noche|Laborable|27|58320|68.00|5.29|179|6.63|9|.33|4.79
+C2|Noche|Fin de semana|11|23760|66.56|18.17|42|3.82|10|.91|19.23
+C3|Madrugada|Laborable|28|60480|85.79|46.41|9|.32|4|.14|30.77
+C3|Madrugada|Fin de semana|11|23760|69.03|9.09|4|.36|1|.09|20.00
+C3|Mañana|Laborable|28|60480|18.83|.00|431|15.39|0|.00|.00
+C3|Mañana|Fin de semana|11|23760|44.05|1.66|117|10.64|0|.00|.00
+C3|Tarde|Laborable|28|59013|51.13|.17|467|16.68|0|.00|.00
+C3|Tarde|Fin de semana|11|23760|65.59|42.27|96|8.73|40|3.64|29.41
+C3|Noche|Laborable|27|58320|79.93|25.92|262|9.70|26|.96|9.03
+C3|Noche|Fin de semana|11|23760|77.66|45.44|46|4.18|45|4.09|49.45

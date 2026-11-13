@@ -1,0 +1,32 @@
+﻿Changed database context to 'VertederoDW'.
+== R1. Lecturas reales por caneca ==
+caneca|lecturas|primera|ultima|llenado_promedio_pct|pct_min|pct_max|dist_min_mm|dist_max_mm|sin_peso
+------|--------|-------|------|--------------------|-------|-------|-----------|-----------|--------
+C1|311|2026-11-06 22:59:55|2026-11-07 10:17:12|14.87|0|100|40|110|311
+C2|311|2026-11-06 22:59:55|2026-11-07 10:17:12|19.47|0|74|58|134|311
+C3|311|2026-11-06 22:59:55|2026-11-07 10:17:12|3.42|0|44|63|153|311
+== R2. Eventos reales por caneca y tipo ==
+caneca|tipo|eventos
+------|----|-------
+C1|apertura|24
+C1|bloqueo_llena|24
+C1|cierre|22
+C2|apertura|41
+C2|cierre|38
+C3|apertura|48
+C3|cierre|49
+== R3. Lecturas y eventos reales por fecha ==
+fecha|nombre_dia|lecturas|eventos
+-----|----------|--------|-------
+2026-11-06|Viernes|99|10
+2026-11-07|Sábado|834|236
+== R4. Alarmas reales ==
+alarmas_reales
+--------------
+0
+== R5. Estado actual: ultima lectura de cada caneca (lo que mostraria una pagina en vivo) ==
+caneca|tipo_residuo|ultima_lectura|porcentaje|distancia_mm|estado
+------|------------|--------------|----------|------------|------
+C1|Aprovechables|2026-11-07 10:17:12|100|44|Llena
+C2|No aprovechables|2026-11-07 10:17:12|0|85|Con espacio
+C3|Orgánicos|2026-11-07 10:17:12|0|138|Con espacio

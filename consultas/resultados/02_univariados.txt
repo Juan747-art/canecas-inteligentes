@@ -1,0 +1,66 @@
+﻿Changed database context to 'VertederoDW'.
+== U1. Distribucion del porcentaje de llenado (variable numerica) ==
+-- U1.a medidas de resumen
+lecturas|promedio|q1|mediana|q3|desviacion_estandar|minimo|maximo
+--------|--------|--|-------|--|-------------------|------|------
+1000000|57.36|33.00|62.00|83.00|28.48|0|97
+-- U1.b histograma en tramos de 10 puntos
+tramo_pct|lecturas|pct_del_total
+---------|--------|-------------
+00-09|56422|5.64
+10-19|76559|7.66
+20-29|88691|8.87
+30-39|70772|7.08
+40-49|84383|8.44
+50-59|87104|8.71
+60-69|146892|14.69
+70-79|116139|11.61
+80-89|110458|11.05
+90-100|162580|16.26
+-- U1.c lecturas por estado de llenado (DimEstadoLlenado)
+estado|desde_pct|hasta_pct|lecturas|pct_del_total
+------|---------|---------|--------|-------------
+Sin lectura|NULL|NULL|521|.05
+Con espacio|0|89|836899|83.69
+Casi llena|90|94|35186|3.52
+Llena|95|100|127394|12.74
+== U2. Distribucion de los eventos por tipo (variable categorica) ==
+tipo|grupo|eventos|pct_del_total
+----|-----|-------|-------------
+apertura|Operación de tapa|3643|48.61
+cierre|Operación de tapa|3643|48.61
+bloqueo_llena|Alerta|209|2.79
+== U3. Distribucion de las aperturas por hora del dia (variable temporal) ==
+hora|hora_texto|franja|aperturas|pct_del_total
+----|----------|------|---------|-------------
+0|00:00|Madrugada|4|.11
+1|01:00|Madrugada|10|.27
+2|02:00|Madrugada|4|.11
+3|03:00|Madrugada|6|.16
+4|04:00|Madrugada|5|.14
+5|05:00|Madrugada|10|.27
+6|06:00|Mañana|271|7.44
+7|07:00|Mañana|437|12.00
+8|08:00|Mañana|264|7.25
+9|09:00|Mañana|99|2.72
+10|10:00|Mañana|102|2.80
+11|11:00|Mañana|207|5.68
+12|12:00|Tarde|509|13.97
+13|13:00|Tarde|380|10.43
+14|14:00|Tarde|124|3.40
+15|15:00|Tarde|84|2.31
+16|16:00|Tarde|98|2.69
+17|17:00|Tarde|242|6.64
+18|18:00|Noche|403|11.06
+19|19:00|Noche|227|6.23
+20|20:00|Noche|87|2.39
+21|21:00|Noche|62|1.70
+22|22:00|Noche|3|.08
+23|23:00|Noche|5|.14
+-- U3.b concentracion en los tres picos (06-08 h, 11-13 h, 17-19 h)
+bloque|aperturas|pct_del_total
+------|---------|-------------
+1. Manana 06-08 h|972|26.68
+2. Almuerzo 11-13 h|1096|30.09
+3. Tarde 17-19 h|872|23.94
+4. Resto (15 horas)|703|19.30

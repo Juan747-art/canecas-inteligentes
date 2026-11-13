@@ -1,0 +1,63 @@
+﻿Changed database context to 'VertederoDW'.
+== K4.a Bloqueos de cada domingo (¿el patron se repite o es un solo dia?) ==
+fecha|nombre_dia|aperturas|bloqueos
+-----|----------|---------|--------
+2026-09-27|Domingo|85|0
+2026-10-04|Domingo|37|28
+2026-10-11|Domingo|51|37
+2026-10-18|Domingo|41|19
+2026-10-25|Domingo|45|20
+2026-11-01|Domingo|49|29
+== K4.b Los 8 dias con mas bloqueos de todo el periodo ==
+fecha|nombre_dia|bloqueos|pct_de_los_bloqueos
+-----|----------|--------|-------------------
+2026-10-11|Domingo|37|17.70
+2026-11-01|Domingo|29|13.88
+2026-10-04|Domingo|28|13.40
+2026-10-08|Jueves|21|10.05
+2026-10-25|Domingo|20|9.57
+2026-10-18|Domingo|19|9.09
+2026-11-03|Martes|11|5.26
+2026-10-23|Viernes|10|4.78
+== K4.c Dias con al menos un bloqueo, por dia de la semana ==
+dia_semana|nombre_dia|dias_con_bloqueo
+----------|----------|----------------
+1|Lunes|4
+2|Martes|3
+3|Miércoles|3
+4|Jueves|2
+5|Viernes|2
+6|Sábado|1
+7|Domingo|5
+== K5.a Fin de semana separado en sabado y domingo (caneca x franja) ==
+caneca|franja|nombre_dia|aperturas|bloqueos|tasa_bloqueo_pct
+------|------|----------|---------|--------|----------------
+C1|Tarde|Sábado|51|0|.00
+C1|Tarde|Domingo|46|14|23.33
+C1|Noche|Sábado|24|0|.00
+C1|Noche|Domingo|11|17|60.71
+C2|Tarde|Sábado|40|0|.00
+C2|Tarde|Domingo|32|7|17.95
+C2|Noche|Sábado|25|0|.00
+C2|Noche|Domingo|17|10|37.04
+C3|Tarde|Sábado|63|0|.00
+C3|Tarde|Domingo|33|40|54.79
+C3|Noche|Sábado|41|0|.00
+C3|Noche|Domingo|5|45|90.00
+== D1. Apoyo a la decision 1: bloqueos y lecturas criticas, domingo frente al resto ==
+grupo|dias|lecturas|llenado_promedio_pct|pct_lecturas_90_o_mas
+-----|----|--------|--------------------|---------------------
+Domingo|6|155520|70.28|29.22
+Lunes a sabado|33|844480|54.99|13.87
+== D2. Apoyo a la decision 2: lunes a sabado, de 18 a 23 h, por caneca ==
+caneca|dias|lecturas|llenado_promedio_pct|pct_lecturas_90_o_mas|aperturas|bloqueos|tasa_bloqueo_pct
+------|----|--------|--------------------|---------------------|---------|--------|----------------
+C1|32|69120|78.05|29.53|247|29|10.51
+C2|32|69120|64.88|4.46|204|9|4.23
+C3|32|69120|76.97|21.87|303|26|7.90
+== D2.b Bloqueos de lunes a sabado por franja (¿donde se concentran?) ==
+franja|bloqueos|pct
+------|--------|---
+Noche|64|84.21
+Madrugada|9|11.84
+Tarde|3|3.95

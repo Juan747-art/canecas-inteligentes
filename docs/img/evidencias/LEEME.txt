@@ -1,0 +1,1 @@
+﻿Guarde aqui las fotos y capturas con los nombres exactos que lista docs/js/datos.js (arreglo EVIDENCIAS). El sitio las muestra solas cuando existen.

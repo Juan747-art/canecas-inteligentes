@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canecas Inteligentes · Proyecto de Gestión del Conocimiento</title>
+<meta name="description" content="Documentación del PGC Canecas Inteligentes: módulo vertedero de una maqueta de ciudad inteligente, con data warehouse, ETL en SSIS y dashboard en Power BI.">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header class="barra">
+  <strong>Canecas Inteligentes</strong>
+  <span>Proyecto de Gestión del Conocimiento · Módulo vertedero de la ciudad inteligente</span>
+  <button id="btn-menu" aria-expanded="false" aria-controls="menu">Menú</button>
+</header>
+
+<div class="marco">
+<nav id="menu" aria-label="Secciones del proyecto">
+  <ol>
+    <li><a href="#identificacion">Identificación</a></li>
+    <li><a href="#problema">Planteamiento del problema</a></li>
+    <li><a href="#justificacion">Justificación</a></li>
+    <li><a href="#objetivos">Objetivos</a></li>
+    <li><a href="#marco">Marco referencial</a></li>
+    <li><a href="#metodologia">Metodología y cronograma</a></li>
+    <li><a href="#desarrollo">Desarrollo de la solución</a></li>
+    <li><a href="#datos">Gestión de los datos</a></li>
+    <li><a href="#dashboard">Dashboard y análisis</a></li>
+    <li><a href="#conocimientos">Conocimientos evidentes</a></li>
+    <li><a href="#decisiones">Validación y decisiones</a></li>
+    <li><a href="#productos">Productos y resultados</a></li>
+    <li><a href="#conclusiones">Conclusiones</a></li>
+    <li><a href="#referencias">Referencias</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============================================================ 1 -->
+<section id="identificacion">
+  <div class="portada">
+    <h1>Canecas Inteligentes</h1>
+    <p>Módulo «vertedero» de una maqueta de ciudad inteligente: tres canecas que abren solas, miden su nivel de llenado y envían sus datos hasta un tablero de análisis.</p>
+    <dl class="ficha">
+      <div><dt>Título del proyecto</dt><dd>Canecas Inteligentes</dd></div>
+      <div><dt>Programa académico</dt><dd>Big Data</dd></div>
+      <div><dt>Sede o extensión</dt><dd>Sede Chía</dd></div>
+      <div><dt>Ciclo de formación</dt><dd>Séptimo semestre</dd></div>
+      <div><dt>Integrantes</dt><dd>Juan Diego Lozano<br>Deivid Real</dd></div>
+      <div><dt>Tipo de proyecto</dt><dd><span class="borrador">Por confirmar</span></dd></div>
+    </dl>
+  </div>
+
+  <div class="aviso">
+    <strong>Qué es real y qué es simulado.</strong>
+    La maqueta, la ESP32, los sensores, el servidor, las bases de datos, el ETL y el tablero son reales y funcionan.
+    Los datos que se analizan en este sitio son, casi en su totalidad, <strong>simulados</strong>: 1.000.000 de lecturas, 7.495 eventos y 3 alarmas generados para el período del 27 de septiembre al 4 de noviembre de 2026.
+    Las lecturas reales de la ESP32 son 933 (más 246 eventos), tomadas en pruebas con la maqueta el 6 y 7 de noviembre de 2026, y no se usan para sacar conclusiones.
+    El peso de los residuos es siempre simulado: la maqueta no tiene sensor de peso.
+    Por eso los hallazgos describen el <em>escenario simulado</em> y las relaciones se presentan como asociaciones, no como causas.
+  </div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="problema">
+  <h2>Planteamiento del problema</h2>
+  <p><span class="borrador">Borrador para revisión del equipo</span></p>
+  <p>En un punto de disposición de residuos con canecas convencionales nadie sabe qué tan llena está cada caneca hasta que alguien la mira. La recolección se programa a una hora fija, sin importar si la caneca está vacía o desbordada, y no queda ningún registro que permita saber a qué horas se usa más, cuál tipo de residuo se acumula más rápido o cuántas veces una persona encontró la caneca llena.</p>
+  <p>El módulo «vertedero» de la maqueta de ciudad inteligente aborda esa necesidad a escala: tres canecas, una por cada color del código nacional de separación en la fuente (blanca para aprovechables, negra para no aprovechables y verde para orgánicos aprovechables; Resolución 2184 de 2019), que miden su nivel de llenado, registran cada uso y dejan los datos disponibles para analizarlos.</p>
+  <p>El contexto general es conocido: el Banco Mundial estima que en 2022 se produjeron 2.560 millones de toneladas de residuos sólidos en el mundo y proyecta 3.860 millones para 2050 si no cambian las tendencias (World Bank, s. f.). Gestionar mejor la recolección empieza por medir.</p>
+  <p><strong>Pregunta del proyecto:</strong> ¿qué comportamientos de llenado y de uso de las canecas pueden demostrarse con los datos del módulo, y cómo orientarían la programación de la recolección?</p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="justificacion">
+  <h2>Justificación</h2>
+  <p><span class="borrador">Borrador para revisión del equipo</span></p>
+  <h3>Población beneficiaria</h3>
+  <ul>
+    <li><strong>Usuarios de las canecas</strong> (habitantes de la ciudad representada en la maqueta): no tocan la tapa y encuentran menos veces una caneca llena.</li>
+    <li><strong>Responsables de la recolección</strong>: pueden decidir cuándo y cuál caneca vaciar con base en datos y no en un horario fijo.</li>
+    <li><strong>Comunidad académica</strong>: el módulo sirve como caso completo de gestión del conocimiento, desde el sensor hasta la decisión.</li>
+  </ul>
+  <h3>Pertinencia de la solución</h3>
+  <p>La solución usa el código de colores vigente en Colombia, componentes de bajo costo y herramientas de uso común en la industria de datos (SQL Server, Integration Services y Power BI). Lo que se aprende con la maqueta —cómo capturar, almacenar, transformar y analizar mediciones de sensores— es lo mismo que exigiría un sistema real, y el escenario simulado permite mostrar cómo el análisis orientaría la gestión antes de invertir en un despliegue.</p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="objetivos">
+  <h2>Objetivos</h2>
+  <p><span class="borrador">Borrador para revisión del equipo</span></p>
+  <h3>Objetivo general</h3>
+  <p>Desarrollar un módulo de canecas inteligentes para una maqueta de ciudad inteligente que capture, almacene y analice datos de llenado y uso, con el fin de obtener conocimientos verificables que sustenten decisiones sobre la recolección de residuos.</p>
+  <h3>Objetivos específicos</h3>
+  <ol>
+    <li>Construir el prototipo físico de tres canecas con apertura automática, medición de nivel y alarma, controlado por una ESP32.</li>
+    <li>Almacenar las mediciones y los eventos en una base de datos operacional (<code>Vertedero</code>) por medio de un servidor que recibe los datos por WiFi.</li>
+    <li>Simular un millón de mediciones con supuestos documentados para disponer de un volumen de datos analizable.</li>
+    <li>Diseñar un data warehouse en modelo estrella (<code>VertederoDW</code>) y cargarlo con un proceso ETL en SQL Server Integration Services.</li>
+    <li>Construir un dashboard en Power BI con indicadores y análisis univariados, bivariados y multivariado, e integrarlo en este sitio.</li>
+    <li>Documentar cinco conocimientos evidentes y dos decisiones sustentadas en los datos, con sus validaciones y limitaciones.</li>
+  </ol>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="marco">
+  <h2>Marco referencial</h2>
+  <p>Solo se citan fuentes que se abrieron y revisaron el 13 de noviembre de 2026. La lista completa, con enlaces, está en <a href="#referencias">Referencias</a>.</p>
+
+  <h3>Separación de residuos en Colombia</h3>
+  <p>La Resolución 2184 de 2019 del Ministerio de Ambiente y Desarrollo Sostenible adopta el código de colores para la separación en la fuente: <strong>verde</strong> para residuos orgánicos aprovechables, <strong>blanco</strong> para residuos aprovechables como plástico, vidrio, metales, multicapa, papel y cartón, y <strong>negro</strong> para residuos no aprovechables. Los municipios y distritos debían implementarlo a partir del 1 de enero de 2021 (Ministerio de Ambiente y Desarrollo Sostenible, 2019a, 2019b). Las tres canecas del módulo siguen ese código.</p>
+
+  <h3>Generación de residuos</h3>
+  <p>El informe <em>What a Waste 3.0</em> del Banco Mundial reporta 2.560 millones de toneladas de residuos sólidos producidas en 2022 y una proyección de 3.860 millones de toneladas para 2050 en el escenario sin cambios (World Bank, s. f.).</p>
+
+  <h3>Antecedente: canecas con Internet de las cosas</h3>
+  <p>Alsayaydeh et al. (2025) describen un sistema de gestión de residuos basado en IoT que mide el nivel de llenado con un sensor ultrasónico HC-SR04, complementado con sensores de peso, temperatura y humedad, y envía los datos a la nube para su consulta. El módulo de este proyecto sigue la misma idea —medir la distancia entre la tapa y los residuos y convertirla en un porcentaje— pero con un sensor láser VL53L0X por caneca, y agrega el registro de los eventos de la tapa y un data warehouse para el análisis histórico.</p>
+
+  <h3>Dispositivos y tecnologías</h3>
+  <ul>
+    <li><strong>ESP32.</strong> Espressif lo presenta como un microcontrolador con conectividad Wi-Fi y Bluetooth integrada (Espressif Systems, s. f.). Es el controlador del módulo.</li>
+    <li><strong>Micro servo SG90.</strong> El fabricante indica 9 g de peso y un par de 1,8 kg/cm a 4,8 V (Tower Pro, s. f.), suficiente para la tapa de cartón.</li>
+    <li><strong>Flask.</strong> Marco ligero de aplicaciones web WSGI (Pallets, s. f.); con él se construyó el servidor que recibe los datos.</li>
+    <li><strong>SQL Server Integration Services.</strong> Plataforma para construir soluciones de integración y transformación de datos (Microsoft, s. f.-a); con ella se construyó el ETL.</li>
+    <li><strong>Power BI.</strong> Plataforma de analítica de negocio de Microsoft (Microsoft, s. f.-b); con ella se construyó el dashboard.</li>
+  </ul>
+  <p class="aviso"><strong>Pendiente.</strong> No se pudo abrir la ficha técnica oficial del sensor VL53L0X (el sitio del fabricante no respondió), así que no se cita. Lo que se dice de ese sensor en este sitio proviene del firmware y de las pruebas del equipo.</p>
+
+  <h3>Metodología CRISP-DM</h3>
+  <p>CRISP-DM es un modelo de proceso para proyectos de minería de datos propuesto como estándar por Wirth y Hipp (2000). Su ciclo de vida tiene seis fases cuya secuencia no es estricta: los proyectos avanzan y retroceden entre fases según lo necesiten (IBM, s. f.).</p>
+
+  <h3>Modelado dimensional</h3>
+  <p>El data warehouse sigue las técnicas de modelado dimensional de Kimball Group (tablas de hechos y de dimensiones, esquema en estrella, dimensiones lentamente cambiantes), recopiladas a partir de <em>The Data Warehouse Toolkit, Third Edition</em> (Kimball Group, s. f.).</p>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="metodologia">
+  <h2>Metodología y cronograma</h2>
+  <p>El proyecto se organizó con las seis fases de CRISP-DM. La tabla relaciona cada fase con lo que se hizo y con la evidencia que lo demuestra.</p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Fase CRISP-DM</th><th>Actividades en el proyecto</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>1. Comprensión del negocio</td><td>Definir el problema del módulo vertedero, las reglas de funcionamiento de las canecas y las preguntas que deben responder los datos.</td><td>Secciones <a href="#problema">Problema</a> y <a href="#objetivos">Objetivos</a>; reglas en <a href="#desarrollo">Desarrollo</a>.</td></tr>
+      <tr><td>2. Comprensión de los datos</td><td>Identificar qué produce cada sensor, diseñar la base operacional y capturar lecturas reales de prueba.</td><td>Modelo relacional; 933 lecturas y 246 eventos reales (6 y 7 de noviembre de 2026).</td></tr>
+      <tr><td>3. Preparación de los datos</td><td>Simular un millón de lecturas, diseñar el modelo estrella y construir el ETL en SSIS con reglas de calidad y conciliación.</td><td>Sección <a href="#datos">Gestión de los datos</a>; registro <code>etl.LogEjecucion</code>.</td></tr>
+      <tr><td>4. Modelado</td><td>Análisis descriptivo: indicadores, análisis univariados, bivariados y multivariado. No se usan modelos predictivos.</td><td>Sección <a href="#dashboard">Dashboard y análisis</a>; carpeta <code>consultas/</code>.</td></tr>
+      <tr><td>5. Evaluación</td><td>Validar cada hallazgo (tamaño de grupos, faltantes, atípicos, causalidad) y formular decisiones.</td><td>Secciones <a href="#conocimientos">Conocimientos</a> y <a href="#decisiones">Validación y decisiones</a>.</td></tr>
+      <tr><td>6. Despliegue</td><td>Publicar el dashboard y este sitio; preparar la actualización automática de los datos.</td><td>Este sitio; <a href="#automatizacion">Actualización de los datos</a>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Cronograma</h3>
+  <p>Las fechas de la tabla son las que se pueden comprobar en los archivos y en las bases de datos del proyecto. <span class="borrador">Fechas de las etapas iniciales por completar</span></p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Fecha</th><th>Actividad</th><th>Fase</th></tr></thead>
+    <tbody>
+      <tr><td>Por completar</td><td>Diseño y construcción de la maqueta; cableado y programación de la ESP32</td><td>1 y 2</td></tr>
+      <tr><td>6 de noviembre de 2026</td><td>Creación de las bases <code>Vertedero</code> y <code>VertederoDW</code>; primeras lecturas reales de la ESP32 (22:59)</td><td>2</td></tr>
+      <tr><td>7 de noviembre de 2026</td><td>Prueba larga con la maqueta (834 lecturas y 236 eventos reales); primera versión del tablero de Power BI</td><td>2 y 4</td></tr>
+      <tr><td>11 de noviembre de 2026</td><td>Construcción del proyecto SSIS <code>VertederoETL</code> y primera carga completa del data warehouse</td><td>3</td></tr>
+      <tr><td>12 de noviembre de 2026</td><td>Ejecuciones de comprobación del ETL (segunda ejecución sin duplicados)</td><td>3 y 5</td></tr>
+      <tr><td>13 de noviembre de 2026</td><td>Consultas de análisis, documentación de conocimientos y decisiones, publicación del sitio</td><td>4, 5 y 6</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="desarrollo">
+  <h2>Desarrollo de la solución</h2>
+
+  <h3>Descripción del módulo</h3>
+  <p>Tres canecas de cartón dentro de la maqueta de la ciudad, controladas por una sola ESP32 DevKit V1. Cada caneca abre su tapa cuando alguien acerca la mano, mide qué tan llena está y avisa cuando ya no cabe más.</p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Caneca</th><th>Residuo</th><th>Color</th><th>Sensor IR (mano)</th><th>Láser (nivel)</th><th>Servo (tapa)</th></tr></thead>
+    <tbody>
+      <tr><td>C1</td><td>Aprovechables</td><td>Blanca</td><td>D4</td><td>XSHUT D18 · I2C 0x30</td><td>D13</td></tr>
+      <tr><td>C2</td><td>No aprovechables</td><td>Negra</td><td>D16</td><td>XSHUT D19 · I2C 0x31</td><td>D14</td></tr>
+      <tr><td>C3</td><td>Orgánicos</td><td>Verde</td><td>D17</td><td>XSHUT D23 · I2C 0x32</td><td>D27</td></tr>
+    </tbody>
+  </table></div>
+  <p>El buzzer compartido está en D25 y el bus I2C de los tres láseres usa SDA D21 y SCL D22. Estos pines están registrados en las tablas <code>Sensores</code> y <code>Actuadores</code> de la base operacional.</p>
+
+  <h3>Usuarios</h3>
+  <ul>
+    <li><strong>Persona que deposita residuos:</strong> acerca la mano y la tapa abre sola.</li>
+    <li><strong>Responsable de la recolección:</strong> consulta el estado y el historial de llenado para decidir cuándo vaciar.</li>
+    <li><strong>Analista (el equipo del proyecto):</strong> mantiene las bases, ejecuta el ETL y construye el dashboard.</li>
+  </ul>
+
+  <h3>Dispositivos</h3>
+  <ul>
+    <li><strong>ESP32 DevKit V1:</strong> lee los sensores, mueve los servos y envía los datos por WiFi (red de 2,4 GHz).</li>
+    <li><strong>Sensor infrarrojo FC-51</strong> (uno por caneca): detecta la mano frente a la caneca.</li>
+    <li><strong>Sensor láser VL53L0X</strong> (uno por caneca, por I2C): mide la distancia en milímetros desde la tapa hasta los residuos.</li>
+    <li><strong>Servo SG90</strong> (uno por caneca): abre la tapa a 85° y la cierra a 0°.</li>
+    <li><strong>Buzzer</strong> (compartido): alarma sonora.</li>
+  </ul>
+
+  <h3>Funcionalidades y reglas</h3>
+  <ol>
+    <li><strong>Apertura automática.</strong> La tapa abre al detectar una mano y cierra 3 s después de que la mano se retira. Tras cerrar, espera 3 s antes de volver a abrir.</li>
+    <li><strong>Medición de llenado.</strong> La distancia medida se convierte en un porcentaje entre la caneca vacía (80 mm) y la caneca llena (30 mm). El firmware aplica además un ajuste de calibración por caneca.</li>
+    <li><strong>Bloqueo por caneca llena.</strong> Desde 95 % de llenado la tapa ya no abre; cada intento se registra como evento <code>bloqueo_llena</code>.</li>
+    <li><strong>Alarma conjunta.</strong> El buzzer suena solo cuando las tres canecas superan 90 % al mismo tiempo; se registra el inicio y el fin de la alarma.</li>
+    <li><strong>Registro.</strong> Cada 10 s se guarda una lectura por caneca; cada apertura, cierre y bloqueo se guarda como evento.</li>
+    <li><strong>Funcionamiento sin red.</strong> Si no hay WiFi, las canecas siguen abriendo y midiendo; solo se pierde el envío de datos.</li>
+  </ol>
+
+  <h3>Procesos</h3>
+  <ol>
+    <li><strong>Depósito:</strong> mano detectada → ¿caneca bajo 95 %? → abre → cierra → eventos <code>apertura</code> y <code>cierre</code>. Si está llena → evento <code>bloqueo_llena</code>.</li>
+    <li><strong>Monitoreo:</strong> cada 10 s la ESP32 envía distancia y porcentaje de las tres canecas.</li>
+    <li><strong>Alerta:</strong> tres canecas sobre 90 % → buzzer y registro de alarma hasta que alguna baje.</li>
+    <li><strong>Análisis:</strong> el ETL lleva los datos al data warehouse y Power BI los presenta.</li>
+  </ol>
+
+  <h3>Arquitectura</h3>
+  <ol class="flujo">
+    <li><b>ESP32</b>Sensores y servos<br><small>lectura cada 10 s</small></li>
+    <li><b>WiFi · HTTP</b>JSON a <code>/lectura</code>, <code>/evento</code>, <code>/alarma</code></li>
+    <li><b>Servidor Python</b>Flask + pyodbc<br><small>valida e inserta</small></li>
+    <li><b>Vertedero</b>SQL Server<br><small>base operacional</small></li>
+    <li><b>ETL en SSIS</b>9 paquetes<br><small>incremental</small></li>
+    <li><b>VertederoDW</b>SQL Server<br><small>modelo estrella</small></li>
+    <li><b>Power BI</b>Dashboard<br><small>integrado en este sitio</small></li>
+  </ol>
+  <p>El servidor valida cada mensaje antes de guardarlo: porcentaje entre 0 y 100, caneca entre 1 y 3 y tipo de evento dentro de la lista permitida. Una distancia de −1 (el láser no midió) se guarda como valor nulo.</p>
+
+  <h3>Tecnologías utilizadas</h3>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Capa</th><th>Tecnología</th></tr></thead>
+    <tbody>
+      <tr><td>Dispositivo</td><td>ESP32 DevKit V1; IDE de Arduino; librerías ESP32Servo y VL53L0X</td></tr>
+      <tr><td>Recepción</td><td>Python con Flask y pyodbc</td></tr>
+      <tr><td>Almacenamiento</td><td>SQL Server 2022 Express (bases <code>Vertedero</code> y <code>VertederoDW</code>)</td></tr>
+      <tr><td>Integración</td><td>SQL Server Integration Services (proyecto <code>VertederoETL</code> en Visual Studio 2022)</td></tr>
+      <tr><td>Análisis</td><td>Power BI Desktop y servicio de Power BI; consultas T-SQL</td></tr>
+      <tr><td>Publicación</td><td>Sitio estático (HTML, CSS y JavaScript) en GitHub Pages</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="automatizacion">Actualización de los datos</h3>
+  <p>Para que un dato nuevo de la ESP32 llegue al dashboard debe recorrer dos tramos. Esta es la situación real de cada uno al 13 de noviembre de 2026.</p>
+
+  <h4>Tramo A: de <code>Vertedero</code> a <code>VertederoDW</code> (el ETL)</h4>
+  <ul>
+    <li><strong>Hoy es manual:</strong> el paquete <code>00_Maestro.dtsx</code> se ejecuta desde Visual Studio.</li>
+    <li><strong>El ETL ya es incremental.</strong> Las tablas de hechos de lecturas y eventos usan una marca de agua (el último identificador cargado, en <code>etl.ControlCarga</code>) y solo extraen lo nuevo. El registro lo confirma: las ejecuciones del 12 de noviembre extrajeron 0 lecturas y 0 eventos nuevos, y los conteos no cambiaron (1.000.933 lecturas y 7.741 eventos). Un índice único sobre el identificador de origen impide duplicados.</li>
+    <li><strong>Prueba de ejecución por línea de comandos:</strong> la utilidad <code>dtexec</code> está instalada, se conecta a las bases y ejecuta las tareas de control, pero se detiene en el primer flujo de datos con el error <code>0xC000F427</code>: fuera de Visual Studio, los flujos de datos exigen tener instalado Integration Services de una edición Standard o superior, y este equipo solo tiene SQL Server Express. La prueba no modificó los datos; dejó dos filas con estado «Error» en el registro del ETL.</li>
+    <li><strong>Qué falta para automatizarlo:</strong> instalar la característica Integration Services de SQL Server 2022 Developer Edition (gratuita, con licencia para desarrollo y pruebas, no para producción). Con eso, la tarea del Programador de tareas de Windows que ya está preparada en la carpeta <code>automatizacion/</code> ejecutaría el maestro cada 5 minutos y dejaría un registro con hora, resultado y filas cargadas.</li>
+  </ul>
+
+  <h4>Tramo B: de <code>VertederoDW</code> a Power BI</h4>
+  <ul>
+    <li><strong>Informe publicado en este sitio.</strong> El modelo está en modo Importar: los datos viven en el servicio de Power BI y solo cambian cuando el modelo se actualiza. Con «Publicar en la web», además, la vista pública se guarda en caché durante una hora. Para actualizar desde un SQL Server local hace falta una puerta de enlace (<em>on-premises data gateway</em>) instalada en este computador y una actualización programada, que en capacidad compartida admite como máximo 8 actualizaciones al día. La puerta de enlace en modo personal solo funciona con el computador encendido y la sesión iniciada. «Publicar en la web» no admite informes en DirectQuery.</li>
+    <li><strong>Demostración en vivo.</strong> La actualización automática de página solo existe para DirectQuery. En Power BI Desktop puede refrescar cada pocos segundos; en el servicio, con capacidad compartida, el mínimo es de 30 minutos. Por eso el «estado actual» de las canecas se muestra en vivo únicamente desde Power BI Desktop, en un informe pequeño aparte, y no en el informe publicado.</li>
+  </ul>
+  <p class="nota">En resumen: no hay tiempo real en el sitio. El dashboard publicado muestra los datos de la última actualización del modelo, y la fecha de esa actualización se indica junto al dashboard.</p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="datos">
+  <h2>Gestión de los datos</h2>
+
+  <h3>Fuente, período, registros y variables</h3>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Elemento</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td>Fuente</td><td>Data warehouse <code>VertederoDW</code> (SQL Server 2022), cargado desde la base operacional <code>Vertedero</code> por el ETL en SSIS</td></tr>
+      <tr><td>Período simulado (el que se analiza)</td><td>27 de septiembre de 2026 00:00:00 a 4 de noviembre de 2026 13:55:30 · 39 días con datos (38 completos; el 4 de noviembre está incompleto, con 15.040 de 25.920 lecturas)</td></tr>
+      <tr><td>Período real</td><td>6 de noviembre de 2026 22:59:55 a 7 de noviembre de 2026 10:17:12</td></tr>
+      <tr><td>Registros</td><td>Lecturas: 1.000.933 (1.000.000 simuladas + 933 reales) · Eventos: 7.741 (7.495 simulados + 246 reales) · Alarmas: 3 (todas simuladas)</td></tr>
+      <tr><td>Variables de medida</td><td>Porcentaje de llenado (0–100), distancia (mm), peso simulado (g), cantidad de eventos, duración de alarma (min)</td></tr>
+      <tr><td>Variables de análisis</td><td>Caneca y tipo de residuo, fecha, día de la semana, tipo de día (laborable o fin de semana), hora, franja horaria, estado de llenado, tipo de evento</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Modelo relacional: base operacional <code>Vertedero</code></h3>
+  <p>Seis tablas. <code>Canecas</code> es la tabla central; sensores, actuadores, lecturas y eventos se relacionan con ella por <code>id_caneca</code>. <code>Alarmas</code> no tiene llave foránea porque una alarma corresponde a las tres canecas a la vez. El buzzer es un actuador sin caneca asignada.</p>
+  <figure class="grafico"><figcaption>Diagrama del modelo relacional<small>Leído de los metadatos de SQL Server (tablas, columnas y llaves foráneas)</small></figcaption>
+    <div class="modelo-scroll" id="dg-relacional"></div></figure>
+
+  <h3>Modelo multidimensional: data warehouse <code>VertederoDW</code></h3>
+  <p>Modelo estrella con tres tablas de hechos y cinco dimensiones. Cada dimensión tiene una fila «Desconocido» con llave −1 para que ningún hecho quede sin dimensión.</p>
+  <figure class="grafico"><figcaption>Diagrama del modelo estrella<small>Hechos en rojo, dimensiones en verde. Leído de los metadatos de SQL Server</small></figcaption>
+    <div class="modelo-scroll" id="dg-estrella"></div></figure>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Tabla</th><th>Grano o contenido</th><th class="num">Filas</th></tr></thead>
+    <tbody>
+      <tr><td>FactLecturas</td><td>Una fila por lectura de un sensor de nivel</td><td class="num">1.000.933</td></tr>
+      <tr><td>FactEventos</td><td>Una fila por evento de tapa (apertura, cierre, bloqueo)</td><td class="num">7.741</td></tr>
+      <tr><td>FactAlarmas</td><td>Una fila por alarma conjunta, con su duración</td><td class="num">3</td></tr>
+      <tr><td>DimFecha</td><td>Calendario desde el 27 de septiembre de 2026, con día de la semana y tipo de día</td><td class="num">462</td></tr>
+      <tr><td>DimHora</td><td>24 horas con franja (madrugada 0–5, mañana 6–11, tarde 12–17, noche 18–23) y jornada</td><td class="num">25</td></tr>
+      <tr><td>DimCaneca</td><td>Las tres canecas con residuo, color y pines</td><td class="num">4</td></tr>
+      <tr><td>DimEstadoLlenado</td><td>Sin lectura · Con espacio (0–89) · Casi llena (90–94) · Llena (95–100)</td><td class="num">5</td></tr>
+      <tr><td>DimTipoEvento</td><td>apertura, cierre, bloqueo_llena</td><td class="num">4</td></tr>
+    </tbody>
+  </table></div>
+  <p>Los conteos de las dimensiones incluyen la fila «Desconocido». <code>FactAlarmas</code> guarda también <code>fecha_fin_key</code> (la fecha en que terminó la alarma), que apunta a <code>DimFecha</code> pero no tiene una llave foránea declarada en la base.</p>
+
+  <h3>Simulación del millón de mediciones</h3>
+  <p>La maqueta solo puede producir unas pocas lecturas reales en una sesión de pruebas. Para tener un volumen analizable se generó un millón de lecturas simuladas, con sus eventos y alarmas, y se cargaron en <code>Vertedero</code> con <code>BULK INSERT</code> desde archivos CSV.</p>
+  <ul>
+    <li><strong>Período y frecuencia:</strong> 27 de septiembre a 4 de noviembre de 2026, una lectura por caneca cada 10 segundos (333.334, 333.333 y 333.333 lecturas por caneca).</li>
+    <li><strong>Uso durante el día:</strong> más aperturas en la mañana, al almuerzo y al final de la tarde.</li>
+    <li><strong>Fin de semana:</strong> 30 % menos uso que en días laborables.</li>
+    <li><strong>Recolección:</strong> todos los días a las 6:00, excepto los domingos. Al recolectar, la caneca vuelve a quedar casi vacía.</li>
+    <li><strong>Fallas del sensor:</strong> 0,05 % de las lecturas sin distancia, para representar las veces en que el láser no mide (resultaron 521 lecturas).</li>
+    <li><strong>Reglas del dispositivo:</strong> las aperturas ocurren con llenado menor a 95 %, los bloqueos con 95 % o más, y la alarma se enciende cuando las tres canecas pasan de 90 % y se apaga con la recolección de las 6:00.</li>
+    <li><strong>Peso (<code>peso_g</code>):</strong> es simulado; la maqueta no tiene sensor de peso. Se calcula a partir del volumen de la caneca (409,5 cm³) y de la densidad del cartón y el papel, en proporción al llenado (entre 0 y 49,8 g). Las lecturas reales tienen el peso nulo.</li>
+  </ul>
+  <p class="aviso"><strong>Consecuencia para el análisis.</strong> Los patrones que aparecen en los datos (picos de uso, efecto del domingo, diferencias entre canecas) son los que la simulación introdujo con esos supuestos. El análisis demuestra que el proceso completo —medir, cargar, calcular e interpretar— funciona y qué decisiones permitiría tomar; no demuestra cómo se comportan canecas reales en una ciudad.</p>
+
+  <h3>Proceso ETL en SSIS</h3>
+  <p>El ETL es el proyecto <code>VertederoETL</code> de SQL Server Integration Services. Tiene dos conexiones OLE DB definidas a nivel de proyecto —<code>Origen</code> (base <code>Vertedero</code>) y <code>DW</code> (base <code>VertederoDW</code>)—, cuyo servidor, base, usuario y contraseña provienen de parámetros del proyecto (la contraseña es un parámetro sensible, cifrado con la cuenta de Windows). Tiene nueve paquetes. La descripción que sigue se obtuvo leyendo los archivos <code>.dtsx</code> y <code>.conmgr</code>.</p>
+
+  <h4>Orden de ejecución: <code>00_Maestro.dtsx</code></h4>
+  <ol>
+    <li><strong>SQL_IniciarLote:</strong> abre un lote en el registro <code>etl.LogEjecucion</code> y obtiene su número.</li>
+    <li><strong>SQL_PrepararLote:</strong> si el parámetro <code>RecargaCompleta</code> es verdadero, vacía los hechos y reinicia las marcas de agua; en la ejecución normal (falso) no borra nada.</li>
+    <li><strong>SEQ_Dimensiones:</strong> ejecuta <code>01_DimFecha</code>, luego <code>02_DimHora</code> y, cuando esta termina, <code>03_DimCaneca</code>, <code>04_DimTipoEvento</code> y <code>05_DimEstadoLlenado</code>.</li>
+    <li><strong>SEQ_Hechos:</strong> ejecuta <code>11_FactLecturas</code>, luego <code>12_FactEventos</code> y luego <code>13_FactAlarmas</code>.</li>
+    <li><strong>SQL_CerrarLote:</strong> suma los resultados de los paquetes y cierra el lote como «OK» o «Error».</li>
+  </ol>
+  <p>Cada paquete recibe el número de lote como parámetro. Si cualquier tarea falla, un controlador de eventos <code>OnError</code> escribe el mensaje en el registro.</p>
+
+  <h4>Paquetes de dimensiones</h4>
+  <p>Los cinco comparten la misma estructura: registrar el inicio, vaciar la tabla temporal, ejecutar el flujo de datos, aplicar las actualizaciones y cerrar el registro. En el flujo de datos, una <strong>búsqueda</strong> (Lookup) contra la dimensión separa las filas nuevas —que se insertan— de las existentes; una <strong>división condicional</strong> compara atributo por atributo y envía a una tabla temporal solo las filas que cambiaron, que luego se actualizan en bloque (dimensión lentamente cambiante de tipo 1: se sobrescribe el valor anterior).</p>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Paquete</th><th>Origen</th><th>Transformaciones</th><th>Destino</th></tr></thead>
+    <tbody>
+      <tr><td><code>01_DimFecha</code></td><td>Consulta que genera un calendario desde la primera fecha de <code>Lecturas</code>, <code>Eventos</code> y <code>Alarmas</code> hasta el 31 de diciembre del año siguiente</td><td>Columnas derivadas: llave <code>aaaammdd</code>, año, mes, día, trimestre, día de la semana (1 = lunes), nombres de mes y de día en español, semana del año, fin de semana (sábado y domingo), tipo de día (laborable o fin de semana). Búsqueda y detección de cambios.</td><td><code>DimFecha</code></td></tr>
+      <tr><td><code>02_DimHora</code></td><td>Consulta que genera las 24 horas</td><td>Columnas derivadas: texto de la hora, franja (madrugada &lt; 6, mañana &lt; 12, tarde &lt; 18, noche) y jornada (diurna de 7 a 18, nocturna el resto). Búsqueda y detección de cambios.</td><td><code>DimHora</code></td></tr>
+      <tr><td><code>03_DimCaneca</code></td><td><code>Canecas</code> con sus <code>Sensores</code> y <code>Actuadores</code> (pines del IR, del láser y del servo, dirección I2C, número de sensores)</td><td>Reglas: rechaza llave nula o nombre vacío. Conversión de la distancia vacía a entero corto. Normalización de textos (mayúsculas, sin espacios sobrantes). Búsquedas en la tabla de equivalencias para homologar tipo de residuo y color. Columnas derivadas: <code>es_aprovechable</code> y «N/D» en pines nulos. Búsqueda y detección de cambios.</td><td><code>DimCaneca</code>; rechazos a <code>etl.Rechazo_DimCaneca</code></td></tr>
+      <tr><td><code>04_DimTipoEvento</code></td><td>Tipos de evento distintos de <code>Eventos</code>, con su conteo</td><td>Regla: rechaza tipo vacío. Normalización y búsqueda de equivalencias (sinónimos). Agregación para consolidar sinónimos. Columnas derivadas: grupo («Operación de tapa» o «Alerta») y <code>es_alerta</code>. Búsqueda y detección de cambios.</td><td><code>DimTipoEvento</code>; rechazos a <code>etl.Rechazo_DimTipoEvento</code></td></tr>
+      <tr><td><code>05_DimEstadoLlenado</code></td><td>Consulta con los cuatro rangos de la regla de negocio</td><td>Columna derivada: <code>requiere_atencion</code> (casi llena y llena). Búsqueda y detección de cambios.</td><td><code>DimEstadoLlenado</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Paquetes de hechos</h4>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Paquete</th><th>Origen</th><th>Transformaciones</th><th>Destino</th></tr></thead>
+    <tbody>
+      <tr><td><code>11_FactLecturas</code></td><td><code>Lecturas</code>, solo las filas con <code>id_lectura</code> mayor que la marca de agua y hasta el máximo actual (<strong>carga incremental</strong>)</td><td>
+        <strong>Reglas de calidad</strong> (división condicional): R1 llave nula; R2 porcentaje nulo o fuera de 0–100; R3 peso o distancia negativos; R4 fecha futura; R5 fecha anterior a 2020.
+        <strong>Conversión de tipo</strong> del peso a decimal.
+        <strong>Columnas derivadas:</strong> fecha, hora, código de estado (0 sin distancia; 3 si ≥ 95; 2 si ≥ 90; 1 en otro caso), <code>lectura_valida</code> (tiene distancia), <code>peso_informado</code> (tiene peso) y <code>peso_kg</code>.
+        <strong>Búsquedas</strong> de las llaves de fecha, hora, caneca y estado; si no hay coincidencia se asigna −1.</td><td><code>FactLecturas</code> (carga rápida); rechazos a <code>etl.Rechazo_FactLecturas</code></td></tr>
+      <tr><td><code>12_FactEventos</code></td><td><code>Eventos</code>, solo las filas con <code>id_evento</code> mayor que la marca de agua (<strong>carga incremental</strong>)</td><td>
+        <strong>Reglas de calidad:</strong> R1 llave nula o tipo vacío; R2 porcentaje fuera de 0–100; R3 fecha futura; R4 fecha anterior a 2020.
+        Normalización del tipo y <strong>búsqueda</strong> de equivalencias.
+        <strong>Columnas derivadas:</strong> fecha, hora y <code>cantidad</code> = 1.
+        <strong>Búsquedas</strong> de las llaves de fecha, hora, caneca y tipo de evento (−1 si no hay coincidencia).</td><td><code>FactEventos</code>; rechazos a <code>etl.Rechazo_FactEventos</code></td></tr>
+      <tr><td><code>13_FactAlarmas</code></td><td><code>Alarmas</code> completa (son pocas filas y cambian después de creadas: la fecha de fin se llena al apagarse)</td><td>
+        <strong>Reglas de calidad:</strong> R1 llave nula; R2 algún porcentaje fuera de 0–100; R3 fin anterior al inicio; R4 inicio futuro; R5 inicio anterior a 2020.
+        <strong>Columnas derivadas:</strong> fecha y hora de inicio, duración en minutos (hasta ahora si sigue activa), <code>activa</code>, porcentaje máximo de las tres canecas y rango de duración.
+        <strong>Búsquedas</strong> de las llaves de fecha de inicio, hora y fecha de fin.</td><td>Tabla temporal <code>etl.stg_FactAlarmas</code> y luego sincronización con <code>FactAlarmas</code> (inserta, actualiza o elimina); rechazos a <code>etl.Rechazo_FactAlarmas</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Control, registro y calidad</h4>
+  <ul>
+    <li><strong>Marca de agua.</strong> Antes de extraer, cada paquete de hechos lee el último identificador cargado y elimina cualquier resto de una ejecución fallida; después de un flujo exitoso avanza la marca. Si algo falla, la marca no avanza y la siguiente ejecución recarga ese rango.</li>
+    <li><strong>Registro.</strong> Cada paquete escribe en <code>etl.LogEjecucion</code> las filas extraídas, insertadas, actualizadas, sin cambio y rechazadas, la duración y el estado. La columna «diferencia» debe ser 0.</li>
+    <li><strong>Rechazos.</strong> Las filas que incumplen una regla no se pierden: se guardan en tablas de rechazo con la etapa y el motivo.</li>
+    <li><strong>Resultado de las reglas en la carga actual:</strong> 0 filas rechazadas, 0 filas con llave desconocida (−1) y 0 duplicados. Los conteos del data warehouse coinciden con los de la base operacional.</li>
+  </ul>
+  <p>Las tareas de control llaman procedimientos del esquema <code>etl</code> (registro, marcas de agua, actualización en bloque y sincronización de alarmas); la lógica fila a fila está en los flujos de datos de los paquetes.</p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="dashboard">
+  <h2>Dashboard y análisis</h2>
+
+  <h3>Dashboard interactivo en Power BI</h3>
+  <div id="pbi-marco"></div>
+  <p class="nota"><strong>Frecuencia de actualización.</strong> <span id="pbi-frecuencia"></span> No es un tablero en tiempo real: muestra los datos de la última actualización del modelo, y la vista pública puede tardar hasta una hora más en reflejarla. El detalle está en <a href="#automatizacion">Actualización de los datos</a>.</p>
+
+  <h3>Preguntas que orientan el análisis</h3>
+  <ol>
+    <li>¿Qué tan llenas permanecen las canecas y cuánto tiempo pasan en estado crítico?</li>
+    <li>¿A qué horas se usan más y a qué horas están más llenas?</li>
+    <li>¿Hay diferencias entre las tres canecas según el tipo de residuo?</li>
+    <li>¿En qué días se concentran los intentos fallidos por caneca llena?</li>
+    <li>¿En qué combinación de caneca, franja horaria y tipo de día es más probable encontrar la caneca llena?</li>
+  </ol>
+  <p>Todos los valores de esta sección se calcularon con consultas T-SQL sobre <code>VertederoDW</code> para el <strong>período simulado (27 de septiembre a 4 de noviembre de 2026)</strong>. Las consultas y sus resultados están en la carpeta <a href="https://github.com/Juan747-art/canecas-inteligentes/tree/main/consultas"><code>consultas/</code></a> del repositorio.</p>
+
+  <h3>Cinco indicadores generales</h3>
+  <div class="kpis">
+    <div class="kpi"><b>57,36 %</b><span>Llenado promedio</span><small>1.000.000 de lecturas. C1 60,89 · C2 50,92 · C3 60,29</small></div>
+    <div class="kpi"><b>16,26 %</b><span>Lecturas en estado crítico (≥ 90 %)</span><small>162.580 lecturas. C1 22,79 · C2 5,98 · C3 20,00</small></div>
+    <div class="kpi"><b>93,41</b><span>Aperturas por día</span><small>3.643 aperturas en 39 días. C1 31,74 · C2 24,95 · C3 36,72</small></div>
+    <div class="kpi"><b>5,43 %</b><span>Tasa de bloqueo</span><small>209 bloqueos de 3.852 intentos (aperturas + bloqueos)</small></div>
+    <div class="kpi"><b>3</b><span>Alarmas conjuntas</span><small>44,32 horas en total; 14,77 horas en promedio (de 10,32 a 17,82)</small></div>
+  </div>
+  <p><strong>Denominadores.</strong> La tasa de bloqueo divide los bloqueos entre los intentos de uso (aperturas más bloqueos). Las aperturas por día dividen entre los 39 días con datos, uno de ellos incompleto.</p>
+
+  <h3>Tres análisis univariados</h3>
+  <figure class="grafico"><figcaption>U1. Distribución del porcentaje de llenado<small>% de las lecturas por tramo de 10 puntos · período simulado · n = 1.000.000</small></figcaption><div id="g-u1"></div></figure>
+  <p>Promedio 57,36 %, mediana 62 %, cuartiles 33 % y 83 %, desviación estándar 28,48, mínimo 0 % y máximo 97 %. La mediana es mayor que el promedio: la distribución tiene una cola hacia los valores bajos (las horas posteriores a la recolección), que reduce el promedio. La mediana representa mejor el nivel típico. Por estado: «Con espacio» 83,69 %, «Casi llena» 3,52 %, «Llena» 12,74 % y «Sin lectura» 0,05 %.</p>
+
+  <figure class="grafico"><figcaption>U2. Eventos por tipo<small>Cantidad de eventos · período simulado · n = 7.495</small></figcaption><div id="g-u2"></div></figure>
+  <p>Aperturas y cierres son 3.643 cada uno (48,61 % y 48,61 %); los bloqueos por caneca llena son 209 (2,79 %).</p>
+
+  <figure class="grafico"><figcaption>U3. Aperturas por hora del día<small>Cantidad de aperturas · período simulado · n = 3.643 · en otro color, las horas de los tres picos</small></figcaption><div id="g-u3"></div></figure>
+  <p>La hora con más aperturas es las 12 (509; 13,97 %), seguida de las 7 (437; 12,00 %) y las 18 (403; 11,06 %). Entre las 0 y las 5 hay 39 aperturas en total.</p>
+
+  <h3>Tres análisis bivariados</h3>
+  <figure class="grafico"><figcaption>B1. Caneca × llenado<small>Promedio, mediana y % de lecturas con 90 % o más · período simulado · unas 333.333 lecturas por caneca</small></figcaption><div id="g-b1"></div></figure>
+
+  <figure class="grafico"><figcaption>B2. Día de la semana × bloqueos<small>Cantidad de bloqueos por caneca llena · período simulado · n = 209 · entre 5 y 6 días por grupo</small></figcaption><div id="g-b2"></div></figure>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Día</th><th class="num">Días</th><th class="num">Aperturas por día</th><th class="num">Bloqueos</th><th class="num">% de los bloqueos</th><th class="num">Tasa de bloqueo</th></tr></thead>
+    <tbody>
+      <tr><td>Lunes</td><td class="num">6</td><td class="num">105,67</td><td class="num">10</td><td class="num">4,78 %</td><td class="num">1,55 %</td></tr>
+      <tr><td>Martes</td><td class="num">6</td><td class="num">107,17</td><td class="num">14</td><td class="num">6,70 %</td><td class="num">2,13 %</td></tr>
+      <tr><td>Miércoles</td><td class="num">6</td><td class="num">102,00</td><td class="num">13</td><td class="num">6,22 %</td><td class="num">2,08 %</td></tr>
+      <tr><td>Jueves</td><td class="num">5</td><td class="num">101,60</td><td class="num">22</td><td class="num">10,53 %</td><td class="num">4,15 %</td></tr>
+      <tr><td>Viernes</td><td class="num">5</td><td class="num">110,40</td><td class="num">16</td><td class="num">7,66 %</td><td class="num">2,82 %</td></tr>
+      <tr><td>Sábado</td><td class="num">5</td><td class="num">77,20</td><td class="num">1</td><td class="num">0,48 %</td><td class="num">0,26 %</td></tr>
+      <tr><td>Domingo</td><td class="num">6</td><td class="num">51,33</td><td class="num">133</td><td class="num">63,64 %</td><td class="num">30,16 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>Por tipo de día: laborable 105,32 aperturas por día (28 días) y fin de semana 63,09 (11 días).</p>
+
+  <figure class="grafico"><figcaption>B3. Hora del día × llenado promedio, por caneca<small>Promedio del porcentaje de llenado · período simulado · unas 42.000 lecturas por hora</small></figcaption><div id="g-b3"></div></figure>
+
+  <h3>Un análisis multivariado: caneca × franja horaria × tipo de día</h3>
+  <p>Las 24 combinaciones se calcularon en una sola consulta (<code>04_multivariado.sql</code>), agrupando directamente por las tres variables.</p>
+  <figure class="grafico"><figcaption>Tasa de bloqueo por caneca, franja y tipo de día<small>Bloqueos ÷ (aperturas + bloqueos), en % · período simulado · * celdas con menos de 30 intentos</small></figcaption><div id="g-multi"></div></figure>
+  <figure class="grafico"><figcaption>Llenado promedio por caneca, franja y tipo de día<small>Promedio del porcentaje de llenado · período simulado · entre 23.760 y 60.480 lecturas por celda</small></figcaption><div id="g-multi-llenado"></div></figure>
+  <p>Al pasar el cursor por una celda aparecen sus conteos. Las celdas de madrugada tienen muy pocos intentos (por ejemplo, 4 bloqueos y 9 aperturas), así que su tasa no es confiable.</p>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="conocimientos">
+  <h2>Conocimientos evidentes</h2>
+  <p>Cinco hallazgos verificables del escenario simulado. Cada uno incluye su visualización y sus ocho elementos.</p>
+
+  <details class="conocimiento" open>
+    <summary>1. El llenado sigue un ciclo diario que se reinicia con la recolección de las 6:00, excepto el domingo</summary>
+    <figure class="grafico"><figcaption>Llenado promedio por hora: lunes a sábado frente a domingo<small>Promedio del porcentaje de llenado de las tres canecas · período simulado</small></figcaption><div id="g-k1"></div></figure>
+    <dl>
+      <dt>Pregunta</dt><dd>¿A qué horas están más llenas y más vacías las canecas? Saberlo indica si la hora de recolección es adecuada.</dd>
+      <dt>Variables</dt><dd>Porcentaje de llenado (<code>FactLecturas.porcentaje</code>), hora (<code>DimHora</code>) y día de la semana (<code>DimFecha</code>).</dd>
+      <dt>Procedimiento</dt><dd>Promedio del porcentaje agrupado por hora sobre 1.000.000 de lecturas; después, el mismo promedio separando los domingos (6 días) del resto (33 días). Consulta <code>03_bivariados.sql</code>, bloques B3 y B3.b.</dd>
+      <dt>Resultado</dt><dd>En todo el período, el promedio más bajo es 10,77 % a las 6 h y el más alto 78,82 % a las 23 h; entre las 0 y las 5 h se mantiene entre 77,07 % y 77,72 %. De lunes a sábado, el promedio a las 6 h es 3,35 %; los domingos es 51,58 % a esa misma hora y llega a 89,09 % a las 22 h.</dd>
+      <dt>Hallazgo</dt><dd>El llenado cae a su mínimo a las 6 h y crece durante el día hasta la noche. Los domingos esa caída no ocurre: la curva parte de la mitad y termina cerca del 90 %.</dd>
+      <dt>Interpretación</dt><dd>Las canecas pasan la noche y la madrugada con el nivel más alto del día, cuando casi nadie las usa, y quedan vacías justo antes del primer pico de uso. El domingo acumula lo del sábado más lo propio.</dd>
+      <dt>Utilidad</dt><dd>Permite evaluar la hora de recolección y muestra que el día sin recolección es el punto débil del esquema.</dd>
+      <dt>Limitación</dt><dd>La recolección a las 6:00 y su ausencia el domingo son supuestos de la simulación; el resultado confirma que los datos los reflejan, no que una ciudad real se comporte así. El promedio por hora oculta la variación entre días.</dd>
+    </dl>
+  </details>
+
+  <details class="conocimiento">
+    <summary>2. La caneca de no aprovechables (C2) se llena menos y pasa menos tiempo en estado crítico</summary>
+    <figure class="grafico"><figcaption>Comparación entre canecas<small>Llenado promedio, % de lecturas con 90 % o más y tasa de bloqueo · período simulado</small></figcaption><div id="g-k2"></div></figure>
+    <dl>
+      <dt>Pregunta</dt><dd>¿Las tres canecas se comportan igual o alguna necesita más atención?</dd>
+      <dt>Variables</dt><dd>Caneca y tipo de residuo (<code>DimCaneca</code>), porcentaje de llenado, y eventos de apertura y bloqueo (<code>FactEventos</code>).</dd>
+      <dt>Procedimiento</dt><dd>Por caneca: promedio y mediana del llenado, porcentaje de lecturas con 90 % o más, aperturas por día y tasa de bloqueo. Consultas <code>03_bivariados.sql</code> (B1) y <code>01_indicadores.sql</code> (I3 e I4). Cada caneca tiene unas 333.333 lecturas.</dd>
+      <dt>Resultado</dt><dd>
+        <div class="tabla-scroll"><table>
+          <thead><tr><th>Caneca</th><th class="num">Promedio</th><th class="num">Mediana</th><th class="num">Lecturas ≥ 90 %</th><th class="num">Aperturas por día</th><th class="num">Tasa de bloqueo</th></tr></thead>
+          <tbody>
+            <tr><td>C1 Aprovechables</td><td class="num">60,89 %</td><td class="num">68 %</td><td class="num">22,79 %</td><td class="num">31,74</td><td class="num">5,06 % (66 de 1.304)</td></tr>
+            <tr><td>C2 No aprovechables</td><td class="num">50,92 %</td><td class="num">54 %</td><td class="num">5,98 %</td><td class="num">24,95</td><td class="num">2,70 % (27 de 1.000)</td></tr>
+            <tr><td>C3 Orgánicos</td><td class="num">60,29 %</td><td class="num">65 %</td><td class="num">20,00 %</td><td class="num">36,72</td><td class="num">7,49 % (116 de 1.548)</td></tr>
+          </tbody>
+        </table></div></dd>
+      <dt>Hallazgo</dt><dd>C2 tiene unos 10 puntos menos de llenado promedio que C1 y C3, y pasa en estado crítico menos de una tercera parte del tiempo que ellas. C3 es la más usada y la que tiene la tasa de bloqueo más alta.</dd>
+      <dt>Interpretación</dt><dd>En las tres canecas la mediana supera al promedio, por las horas de la mañana con la caneca casi vacía. La presión sobre la capacidad se concentra en C1 y C3; C2 tiene holgura.</dd>
+      <dt>Utilidad</dt><dd>Indica cuáles canecas priorizar si solo se puede hacer un vaciado adicional o ampliar la capacidad.</dd>
+      <dt>Limitación</dt><dd>La diferencia entre canecas proviene de los ritmos de llenado que definió la simulación. No demuestra que los residuos no aprovechables se generen menos en la realidad.</dd>
+    </dl>
+  </details>
+
+  <details class="conocimiento">
+    <summary>3. Ocho de cada diez aperturas ocurren en tres bloques de tres horas</summary>
+    <figure class="grafico"><figcaption>Aperturas por hora del día<small>Cantidad de aperturas · período simulado · n = 3.643</small></figcaption><div id="g-k3"></div></figure>
+    <dl>
+      <dt>Pregunta</dt><dd>¿El uso de las canecas se reparte durante el día o se concentra en pocas horas?</dd>
+      <dt>Variables</dt><dd>Eventos de tipo apertura (<code>FactEventos</code> con <code>DimTipoEvento</code>) y hora del evento (<code>DimHora</code>).</dd>
+      <dt>Procedimiento</dt><dd>Conteo de aperturas por hora y porcentaje sobre el total; después, suma por bloques. Consulta <code>02_univariados.sql</code>, bloques U3 y U3.b.</dd>
+      <dt>Resultado</dt><dd>De 6 a 8 h: 972 aperturas (26,68 %). De 11 a 13 h: 1.096 (30,09 %). De 17 a 19 h: 872 (23,94 %). Las otras 15 horas suman 703 (19,30 %).</dd>
+      <dt>Hallazgo</dt><dd>Nueve horas del día reúnen 2.940 de las 3.643 aperturas, el 80,70 %.</dd>
+      <dt>Interpretación</dt><dd>El uso coincide con la mañana, el almuerzo y el final de la tarde. Fuera de esos bloques las canecas casi no se usan.</dd>
+      <dt>Utilidad</dt><dd>Señala las horas en que una caneca llena afecta a más personas y las horas valle en que un vaciado o un mantenimiento estorbaría menos.</dd>
+      <dt>Limitación</dt><dd>Los tres picos son un supuesto de la simulación. Los bloqueos no cuentan como aperturas, de modo que en las horas con canecas llenas el uso intentado es mayor que el que muestra la gráfica.</dd>
+    </dl>
+  </details>
+
+  <details class="conocimiento">
+    <summary>4. Los domingos concentran el 63,64 % de los bloqueos por caneca llena</summary>
+    <figure class="grafico"><figcaption>Tasa de bloqueo por día de la semana<small>Bloqueos ÷ (aperturas + bloqueos), en % · período simulado · entre 5 y 6 días por grupo</small></figcaption><div id="g-k4"></div></figure>
+    <dl>
+      <dt>Pregunta</dt><dd>¿En qué días las personas encuentran más veces la caneca llena?</dd>
+      <dt>Variables</dt><dd>Eventos de apertura y de bloqueo (<code>FactEventos</code>), día de la semana (<code>DimFecha</code>) y alarmas (<code>FactAlarmas</code>).</dd>
+      <dt>Procedimiento</dt><dd>Conteo de bloqueos y aperturas por día de la semana, dividido entre el número de días de cada grupo; tasa de bloqueo = bloqueos ÷ (aperturas + bloqueos). Luego se revisó cada domingo por separado. Consultas <code>03_bivariados.sql</code> (B2.a) y <code>05_conocimientos_y_decisiones.sql</code> (K4).</dd>
+      <dt>Resultado</dt><dd>Los 6 domingos reúnen 133 de los 209 bloqueos (63,64 %), con 22,17 bloqueos por día y una tasa de 30,16 %. En los demás días la tasa está entre 0,26 % (sábado) y 4,15 % (jueves). Cinco de los seis domingos tuvieron entre 19 y 37 bloqueos; el primero (27 de septiembre, día en que empieza la simulación) tuvo 0. Dos de las tres alarmas conjuntas empezaron en domingo. El llenado promedio del domingo es 70,28 %, frente a 54,99 % de lunes a sábado.</dd>
+      <dt>Hallazgo</dt><dd>El 15 % de los días (6 de 39) concentra casi dos tercios de los bloqueos, aunque el domingo es el día con menos aperturas (51,33 por día).</dd>
+      <dt>Interpretación</dt><dd>En el escenario simulado, el día con más intentos fallidos coincide con el único día sin recolección. Menos aperturas el domingo no significa menos demanda: parte de los intentos termina en bloqueo.</dd>
+      <dt>Utilidad</dt><dd>Sustenta la primera decisión: revisar la recolección del domingo.</dd>
+      <dt>Limitación</dt><dd>Es una asociación entre el día y los bloqueos dentro de datos simulados, con solo 6 domingos. No se puede afirmar cuánto bajarían los bloqueos con una recolección dominical sin probarlo.</dd>
+    </dl>
+  </details>
+
+  <details class="conocimiento">
+    <summary>5. La combinación más crítica es la caneca de orgánicos (C3), en la noche, en fin de semana</summary>
+    <figure class="grafico"><figcaption>Tasa de bloqueo por caneca, franja y tipo de día<small>Bloqueos ÷ (aperturas + bloqueos), en % · período simulado · * celdas con menos de 30 intentos</small></figcaption><div id="g-k5"></div></figure>
+    <dl>
+      <dt>Pregunta</dt><dd>¿En qué combinación de caneca, franja horaria y tipo de día es más probable que alguien encuentre la caneca llena?</dd>
+      <dt>Variables</dt><dd>Caneca (<code>DimCaneca</code>), franja horaria (<code>DimHora</code>), tipo de día (<code>DimFecha</code>), aperturas y bloqueos (<code>FactEventos</code>) y porcentaje de llenado (<code>FactLecturas</code>).</dd>
+      <dt>Procedimiento</dt><dd>Una sola consulta agrupa por las tres variables a la vez (24 celdas) y calcula llenado, aperturas, bloqueos y tasa de bloqueo de cada celda. Consulta <code>04_multivariado.sql</code>; el fin de semana se separó después en sábado y domingo (<code>05</code>, bloque K5.a).</dd>
+      <dt>Resultado</dt><dd>C3 × noche × fin de semana: 45 bloqueos y 46 aperturas en 11 días, tasa de 49,45 % y 45,44 % de las lecturas con 90 % o más. La misma caneca y franja en día laborable: 9,03 % (26 bloqueos, 262 aperturas). En la noche de fin de semana, C1 tiene 32,69 % y C2 19,23 %. Al separar el fin de semana, los 45 bloqueos de C3 en la noche son todos de domingo (45 bloqueos frente a 5 aperturas); el sábado tuvo 41 aperturas y ningún bloqueo.</dd>
+      <dt>Hallazgo</dt><dd>La tasa de bloqueo más alta con un número suficiente de intentos está en C3, de 18 a 23 h, en fin de semana: uno de cada dos intentos falla. Ese resultado no se deduce de mirar por separado la caneca (7,49 %), la franja o el tipo de día (16,18 %).</dd>
+      <dt>Interpretación</dt><dd>El problema no es «el fin de semana» en general sino la noche del domingo, y afecta sobre todo a la caneca más usada.</dd>
+      <dt>Utilidad</dt><dd>Permite dirigir una acción a un punto preciso (qué caneca, cuándo) en lugar de aumentar la recolección en general.</dd>
+      <dt>Limitación</dt><dd>Algunas celdas tienen muy pocos casos: las de madrugada muestran tasas de 30,77 % con solo 13 intentos y no son confiables. La celda destacada tiene 91 intentos en 11 días. Los datos son simulados.</dd>
+    </dl>
+  </details>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="decisiones">
+  <h2>Validación y decisiones</h2>
+
+  <h3>Validación de los hallazgos</h3>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Pregunta de validación</th><th>Respuesta</th></tr></thead>
+    <tbody>
+      <tr><td>¿Se obtiene directamente de los datos?</td><td>Sí. Cada valor sale de una consulta sobre <code>VertederoDW</code>; no hay cifras estimadas.</td></tr>
+      <tr><td>¿El procedimiento puede repetirse?</td><td>Sí. Las siete consultas están en la carpeta <code>consultas/</code>, numeradas, junto con la salida obtenida el 13 de noviembre de 2026.</td></tr>
+      <tr><td>¿La gráfica corresponde a las variables?</td><td>Sí. Cada gráfica de este sitio se dibuja con los valores de la consulta que la acompaña e indica unidad, período y tamaño del grupo.</td></tr>
+      <tr><td>¿Se compararon cantidades y porcentajes?</td><td>Sí. Los bloqueos se presentan como conteo, como porcentaje del total y como tasa sobre los intentos; las aperturas, como total y por día.</td></tr>
+      <tr><td>¿Los grupos tienen suficientes registros?</td><td>Ver «Tamaño de los grupos».</td></tr>
+      <tr><td>¿Influyen faltantes o valores atípicos?</td><td>Ver «Valores faltantes» y «Valores atípicos».</td></tr>
+      <tr><td>¿Se evitó afirmar causalidad?</td><td>Sí. Las relaciones se describen como asociaciones dentro del escenario simulado.</td></tr>
+      <tr><td>¿Responde al problema del proyecto?</td><td>Sí. Los cinco conocimientos tratan del llenado, el uso y los intentos fallidos, que son la base para programar la recolección.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tamaño de los grupos comparados</h3>
+  <ul>
+    <li><strong>Canecas:</strong> 333.334, 333.333 y 333.333 lecturas. Grupos equilibrados.</li>
+    <li><strong>Días de la semana:</strong> entre 5 y 6 días por grupo (lunes, martes, miércoles y domingo 6; jueves, viernes y sábado 5). Son pocos días; por eso se revisó cada domingo por separado.</li>
+    <li><strong>Tipo de día:</strong> 28 días laborables y 11 de fin de semana. Los totales no son comparables directamente; se usan valores por día y tasas.</li>
+    <li><strong>Franjas horarias:</strong> entre 246.240 y 252.720 lecturas por franja.</li>
+    <li><strong>Celdas del multivariado:</strong> entre 23.760 y 60.480 lecturas, pero los eventos son escasos en la madrugada (entre 2 y 13 aperturas por celda). Esas tasas se marcan con asterisco y no se usan en las decisiones.</li>
+    <li><strong>Alarmas:</strong> solo 3. Se describen una por una; no se sacan promedios concluyentes.</li>
+  </ul>
+
+  <h3>Valores faltantes</h3>
+  <ul>
+    <li><strong>Distancia nula:</strong> 521 lecturas simuladas (0,05 %), repartidas entre las tres canecas (189, 175 y 157). Estas lecturas tienen porcentaje 0 y están clasificadas como «Sin lectura». No se eliminaron. Su efecto es mínimo: el llenado promedio con todas las lecturas es 57,36 % y con solo las válidas es 57,39 %.</li>
+    <li><strong>Peso nulo:</strong> las 933 lecturas reales no tienen peso porque la maqueta no tiene sensor de peso. El peso no se usa en ningún conocimiento ni decisión.</li>
+  </ul>
+
+  <h3>Valores atípicos e inusuales</h3>
+  <ul>
+    <li><strong>Rangos:</strong> en los datos simulados el porcentaje va de 0 a 97 y la distancia de 28 a 83 mm; ningún porcentaje está fuera de 0–100.</li>
+    <li><strong>Día incompleto:</strong> el 4 de noviembre de 2026 tiene 15.040 lecturas en lugar de 25.920 (termina a las 13:55:30). Se conservó; afecta poco a los promedios por hora de la tarde y la noche de los miércoles.</li>
+    <li><strong>Primer día:</strong> el domingo 27 de septiembre no tuvo bloqueos porque la simulación empieza ese día con las canecas vacías. Se conservó y se menciona en el conocimiento 4.</li>
+    <li><strong>Jueves 8 de octubre:</strong> 21 bloqueos, inusual para un día laborable. Se investigó: coincide con la segunda alarma conjunta (empezó ese día a las 19:41). Es un caso coherente, no un error, y se conservó.</li>
+    <li><strong>Cierres con 95 % o más:</strong> 28 cierres registran 95 % o más. Es coherente: la caneca llegó al umbral con ese mismo depósito. Ninguna apertura ocurre con 95 % o más y ningún bloqueo con menos.</li>
+    <li><strong>Datos reales:</strong> en las pruebas con la maqueta la distancia llega hasta 153 mm, más que la distancia de caneca vacía (80 mm), y C1 registró los 24 bloqueos reales. Son pruebas manuales de calibración; por eso los datos reales no se mezclan con el análisis.</li>
+  </ul>
+
+  <h3>Decisiones sustentadas</h3>
+  <p>Las dos decisiones corresponden al escenario simulado y muestran cómo el análisis orientaría la gestión del módulo.</p>
+
+  <div class="decision">
+    <h4>Decisión 1. Agregar una recolección el domingo</h4>
+    <ol>
+      <li><strong>Acción propuesta:</strong> programar la recolección de las 6:00 también los domingos, igual que el resto de la semana.</li>
+      <li><strong>Hallazgo y valores que la respaldan:</strong> los domingos reúnen 133 de 209 bloqueos (63,64 %) en 6 de 39 días, con una tasa de bloqueo de 30,16 % frente a un máximo de 4,15 % en los demás días (conocimiento 4). Los domingos el llenado a las 6 h es 51,58 % en promedio, frente a 3,35 % de lunes a sábado (conocimiento 1), y el 29,22 % de las lecturas dominicales tiene 90 % o más, frente a 13,87 % el resto de la semana. Dos de las tres alarmas conjuntas empezaron en domingo.</li>
+      <li><strong>A qué se dirige:</strong> al proceso de recolección de las tres canecas, el día domingo.</li>
+      <li><strong>Mejora esperada e indicador de seguimiento:</strong> se espera que la tasa de bloqueo del domingo se acerque a la de los demás días. Indicador: tasa de bloqueo dominical (línea base 30,16 %; referencia de los otros días, entre 0,26 % y 4,15 %). Indicador secundario: bloqueos por domingo (línea base 22,17).</li>
+      <li><strong>Limitaciones:</strong> los datos son simulados y solo hay 6 domingos. La relación entre la falta de recolección y los bloqueos es una asociación en el escenario, no un efecto medido. No se evaluó el costo de una jornada adicional.</li>
+    </ol>
+  </div>
+
+  <div class="decision">
+    <h4>Decisión 2. Hacer un vaciado adicional de C1 y C3 antes de las 18:00, de lunes a sábado</h4>
+    <ol>
+      <li><strong>Acción propuesta:</strong> vaciar las canecas de aprovechables (C1) y de orgánicos (C3) al final de la tarde, antes del pico de uso de las 18 h. C2 se mantiene con una sola recolección diaria.</li>
+      <li><strong>Hallazgo y valores que la respaldan:</strong> de lunes a sábado, entre las 18 y las 23 h, C1 tiene un llenado promedio de 78,05 % con 29,53 % de las lecturas en 90 % o más, y C3 tiene 76,97 % y 21,87 %; C2 tiene 64,88 % y 4,46 %. La tasa de bloqueo en ese horario es 10,51 % en C1, 7,90 % en C3 y 4,23 % en C2. El 84,21 % de los bloqueos de lunes a sábado (64 de 76) ocurre en la franja de la noche (conocimientos 2 y 5), y el bloque de 17 a 19 h reúne el 23,94 % de las aperturas (conocimiento 3).</li>
+      <li><strong>A qué se dirige:</strong> a las canecas C1 y C3, en la franja de 18 a 23 h, de lunes a sábado.</li>
+      <li><strong>Mejora esperada e indicador de seguimiento:</strong> menos tiempo en estado crítico y menos intentos fallidos en la noche. Indicador: porcentaje de lecturas con 90 % o más entre las 18 y las 23 h en C1 y C3 (línea base 29,53 % y 21,87 %; referencia, C2 con 4,46 %). Indicador secundario: bloqueos nocturnos de lunes a sábado (línea base 64 en 33 días).</li>
+      <li><strong>Limitaciones:</strong> datos simulados; la hora del vaciado se eligió a partir de promedios por hora, que ocultan la variación entre días. Un segundo vaciado tiene un costo que no se evaluó. Si se aplica la decisión 1, hay que volver a medir, porque parte de la presión del lunes en la madrugada proviene del domingo.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="productos">
+  <h2>Productos y resultados</h2>
+  <div class="tabla-scroll"><table>
+    <thead><tr><th>Producto esperado</th><th>Producto alcanzado</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>Prototipo físico de tres canecas</td><td>Maqueta con ESP32, tres sensores IR, tres láseres, tres servos y buzzer; firmware con las reglas descritas</td><td>Alcanzado</td></tr>
+      <tr><td>Captura de datos reales</td><td>Servidor Flask que recibe e inserta en <code>Vertedero</code>; 933 lecturas y 246 eventos reales</td><td>Alcanzado</td></tr>
+      <tr><td>Base operacional</td><td><code>Vertedero</code> con 6 tablas y 4 relaciones</td><td>Alcanzado</td></tr>
+      <tr><td>Simulación de un millón de mediciones</td><td>1.000.000 de lecturas, 7.495 eventos y 3 alarmas</td><td>Alcanzado</td></tr>
+      <tr><td>Data warehouse</td><td><code>VertederoDW</code> en modelo estrella: 3 hechos y 5 dimensiones</td><td>Alcanzado</td></tr>
+      <tr><td>ETL en SSIS</td><td>Proyecto <code>VertederoETL</code> con 9 paquetes, carga incremental, registro y rechazos; conciliación con diferencia 0</td><td>Alcanzado</td></tr>
+      <tr><td>Análisis</td><td>5 indicadores, 3 univariados, 3 bivariados y 1 multivariado, con consultas reproducibles</td><td>Alcanzado</td></tr>
+      <tr><td>Conocimientos y decisiones</td><td>5 conocimientos con sus 8 elementos y 2 decisiones con sus 5 elementos</td><td>Alcanzado</td></tr>
+      <tr><td>Dashboard en Power BI integrado</td><td>Informe con tres páginas en Power BI Desktop; integración en el sitio preparada</td><td>Pendiente de publicar e integrar</td></tr>
+      <tr><td>Actualización automática de los datos</td><td>Diagnóstico hecho y tarea programada preparada</td><td>Pendiente (requiere instalar Integration Services y la puerta de enlace)</td></tr>
+      <tr><td>Sitio web publicado</td><td>Este sitio</td><td>Alcanzado</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Evidencias verificables del funcionamiento</h3>
+  <p id="conteo-evidencias"></p>
+  <div id="galeria"></div>
+</section>
+
+<!-- ============================================================ 13 -->
+<section id="conclusiones">
+  <h2>Conclusiones</h2>
+  <h3>Cumplimiento de los objetivos</h3>
+  <ul>
+    <li>El recorrido completo del dato funciona: de la ESP32 a la base operacional, de allí al data warehouse por medio del ETL en SSIS, y del data warehouse al análisis.</li>
+    <li>El ETL carga 1.000.933 lecturas, 7.741 eventos y 3 alarmas sin rechazos ni duplicados, y es incremental: una segunda ejecución no vuelve a cargar lo existente.</li>
+    <li>El análisis del escenario simulado produjo cinco conocimientos verificables y dos decisiones: recolectar también el domingo y hacer un vaciado adicional de C1 y C3 antes de las 18:00.</li>
+    <li>La integración interactiva del dashboard y la actualización automática quedaron preparadas, no terminadas.</li>
+  </ul>
+  <h3>Limitaciones</h3>
+  <ul>
+    <li>Casi todos los datos son simulados. Los hallazgos describen los supuestos de la simulación y no el comportamiento de canecas reales.</li>
+    <li>El período es de 39 días: hay entre 5 y 6 repeticiones de cada día de la semana y solo 3 alarmas.</li>
+    <li>El peso es simulado y los datos reales son pruebas cortas de calibración.</li>
+    <li>La maqueta es de cartón y a escala; las distancias (30 a 80 mm) no representan una caneca de tamaño real.</li>
+    <li>No hay tiempo real: el dashboard muestra los datos de la última actualización.</li>
+  </ul>
+  <h3>Oportunidades de mejora</h3>
+  <ul>
+    <li>Dejar la maqueta encendida varios días para reunir datos reales suficientes y contrastarlos con la simulación.</li>
+    <li>Instalar Integration Services (edición Developer) para ejecutar el ETL de forma programada, y la puerta de enlace para actualizar el informe publicado.</li>
+    <li>Agregar un sensor de peso (celda de carga) para dejar de simular esa variable.</li>
+    <li>Declarar en la base la relación entre <code>FactAlarmas.fecha_fin_key</code> y <code>DimFecha</code>.</li>
+    <li>Guardar el usuario y la contraseña del servidor Python fuera del código.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ 14 -->
+<section id="referencias">
+  <h2>Referencias</h2>
+  <p>Todas las fuentes se abrieron y revisaron el 13 de noviembre de 2026.</p>
+  <ul class="refs">
+    <li>Alsayaydeh, J. A. J., Bacarra, R., Khang, A. W. Y., Yaacob, N. B. M., y Herawan, S. G. (2025). IoT-based smart waste management system: A solution for urban sustainability. <em>IJSSE</em>, 1173–1183. <a href="https://doi.org/10.18280/ijsse.150609">https://doi.org/10.18280/ijsse.150609</a> (consultado en <a href="https://iieta.org/node/20829">https://iieta.org/node/20829</a>)</li>
+    <li>Espressif Systems. (s. f.). <em>ESP32 Wi-Fi &amp; Bluetooth SoC</em>. <a href="https://www.espressif.com/en/products/socs/esp32">https://www.espressif.com/en/products/socs/esp32</a></li>
+    <li>IBM. (s. f.). <em>CRISP-DM Help Overview</em>. IBM SPSS Modeler Documentation. <a href="https://www.ibm.com/docs/en/spss-modeler/saas?topic=dm-crisp-help-overview">https://www.ibm.com/docs/en/spss-modeler/saas?topic=dm-crisp-help-overview</a></li>
+    <li>Kimball Group. (s. f.). <em>Dimensional Modeling Techniques</em>. <a href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling/">https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling/</a></li>
+    <li>Microsoft. (s. f.-a). <em>SQL Server Integration Services</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/sql/integration-services/sql-server-integration-services">https://learn.microsoft.com/en-us/sql/integration-services/sql-server-integration-services</a></li>
+    <li>Microsoft. (s. f.-b). <em>What is Power BI?</em> Microsoft Learn. <a href="https://learn.microsoft.com/en-us/power-bi/fundamentals/power-bi-overview">https://learn.microsoft.com/en-us/power-bi/fundamentals/power-bi-overview</a></li>
+    <li>Microsoft. (s. f.-c). <em>dtexec Utility</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/sql/integration-services/packages/dtexec-utility">https://learn.microsoft.com/en-us/sql/integration-services/packages/dtexec-utility</a></li>
+    <li>Microsoft. (s. f.-d). <em>Editions and supported features of SQL Server 2022</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2022">https://learn.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2022</a></li>
+    <li>Microsoft. (s. f.-e). <em>Publish to web from Power BI</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-publish-to-web">https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-publish-to-web</a></li>
+    <li>Microsoft. (s. f.-f). <em>Data refresh in Power BI</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/power-bi/connect-data/refresh-data">https://learn.microsoft.com/en-us/power-bi/connect-data/refresh-data</a></li>
+    <li>Microsoft. (s. f.-g). <em>Use a personal gateway in Power BI</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-personal-mode">https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-personal-mode</a></li>
+    <li>Microsoft. (s. f.-h). <em>Automatic page refresh in Power BI Desktop</em>. Microsoft Learn. <a href="https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-automatic-page-refresh">https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-automatic-page-refresh</a></li>
+    <li>Ministerio de Ambiente y Desarrollo Sostenible. (2019a, 26 de diciembre). <em>Resolución 2184 de 2019, por la cual se modifica la Resolución 668 de 2016 sobre uso racional de bolsas plásticas y se adoptan otras disposiciones</em>. Diario Oficial 51.179. <a href="https://normas.cra.gov.co/gestor/docs/resolucion_minambienteds_2184_2019.htm">https://normas.cra.gov.co/gestor/docs/resolucion_minambienteds_2184_2019.htm</a></li>
+    <li>Ministerio de Ambiente y Desarrollo Sostenible. (2019b, 27 de diciembre). <em>Gobierno unifica el código de colores para la separación de residuos en la fuente a nivel nacional</em>. <a href="https://www.minambiente.gov.co/gobierno-unifica-el-codigo-de-colores-para-la-separacion-de-residuos-en-la-fuente-a-nivel-nacional/">https://www.minambiente.gov.co/gobierno-unifica-el-codigo-de-colores-para-la-separacion-de-residuos-en-la-fuente-a-nivel-nacional/</a></li>
+    <li>Pallets. (s. f.). <em>Welcome to Flask</em>. Flask Documentation (3.1.x). <a href="https://flask.palletsprojects.com/en/stable/">https://flask.palletsprojects.com/en/stable/</a></li>
+    <li>Tower Pro. (s. f.). <em>SG90 Digital</em>. <a href="https://www.towerpro.com.tw/product/sg90-7/">https://www.towerpro.com.tw/product/sg90-7/</a></li>
+    <li>Wirth, R., y Hipp, J. (2000). CRISP-DM: Towards a standard process model for data mining. En <em>Proceedings of the 4th International Conference on the Practical Applications of Knowledge Discovery and Data Mining</em> (pp. 29–39). Registro bibliográfico: <a href="https://bibbase.org/network/publication/wirth-hipp-crispdmtowardsastandardprocessmodelfordatamining-2000">https://bibbase.org/network/publication/wirth-hipp-crispdmtowardsastandardprocessmodelfordatamining-2000</a></li>
+    <li>World Bank. (s. f.). <em>What a Waste 3.0: Global snapshot of solid waste management toward circularity until 2050</em>. <a href="https://www.worldbank.org/what-a-waste">https://www.worldbank.org/what-a-waste</a></li>
+  </ul>
+  <footer>
+    Canecas Inteligentes · Juan Diego Lozano y Deivid Real · Big Data, séptimo semestre, Sede Chía · Sitio publicado el 13 de noviembre de 2026.
+    Código, consultas y scripts: <a href="https://github.com/Juan747-art/canecas-inteligentes">repositorio en GitHub</a>.
+  </footer>
+</section>
+
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/graficos.js"></script>
+</body>
+</html>

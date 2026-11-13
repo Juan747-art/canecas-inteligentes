@@ -1,0 +1,78 @@
+﻿Changed database context to 'VertederoDW'.
+== A. Lecturas por origen (simulado / real) ==
+origen|lecturas|primera|ultima|dias_con_datos
+------|--------|-------|------|--------------
+Real ESP32|933|2026-11-06 22:59:55|2026-11-07 10:17:12|2
+Simulado|1000000|2026-09-27 00:00:00|2026-11-04 13:55:30|39
+== B. Eventos por origen y tipo ==
+origen|tipo|eventos|pct_min|pct_max
+------|----|-------|-------|-------
+Real ESP32|apertura|113|0|93
+Real ESP32|bloqueo_llena|24|95|100
+Real ESP32|cierre|109|0|100
+Simulado|apertura|3643|0|94
+Simulado|bloqueo_llena|209|95|97
+Simulado|cierre|3643|1|97
+== C. Conciliacion origen (Vertedero) vs data warehouse ==
+tabla|filas_origen|filas_dw|rechazadas
+-----|------------|--------|----------
+Lecturas|1000933|1000933|0
+Eventos|7741|7741|0
+Alarmas|3|3|0
+== D. Duplicados y claves desconocidas (-1) en FactLecturas ==
+filas|ids_distintos|con_clave_desconocida
+-----|-------------|---------------------
+1000933|1000933|0
+== E. Valores faltantes por origen y caneca ==
+origen|caneca|lecturas|sin_distancia|pct_sin_distancia|sin_peso
+------|------|--------|-------------|-----------------|--------
+Real ESP32|C1|311|0|.000|311
+Real ESP32|C2|311|0|.000|311
+Real ESP32|C3|311|0|.000|311
+Simulado|C1|333334|189|.057|0
+Simulado|C2|333333|175|.053|0
+Simulado|C3|333333|157|.047|0
+== F. Rangos (posibles atipicos) por origen ==
+origen|pct_min|pct_max|dist_min_mm|dist_max_mm|peso_min_g|peso_max_g|pct_fuera_de_0_100
+------|-------|-------|-----------|-----------|----------|----------|------------------
+Real ESP32|0|100|40|153|NULL|NULL|0
+Simulado|0|97|28|83|.0|49.8|0
+== G. Llenado de las lecturas SIN distancia frente a las validas (periodo simulado) ==
+lectura_valida|lecturas|llenado_promedio_pct
+--------------|--------|--------------------
+0|521|.00
+1|999479|57.39
+== H. Coherencia de eventos con la regla del 95 % (periodo simulado) ==
+tipo|con_95_o_mas|con_menos_de_95
+----|------------|---------------
+apertura|0|3643
+bloqueo_llena|209|0
+cierre|28|3615
+== I. Tamano de los grupos comparados (periodo simulado) ==
+-- I.1 dias por tipo de dia y por dia de la semana
+tipo_dia|dia_semana|nombre_dia|dias|lecturas
+--------|----------|----------|----|--------
+Laborable|1|Lunes|6|155520
+Laborable|2|Martes|6|155520
+Laborable|3|Miércoles|6|144640
+Laborable|4|Jueves|5|129600
+Laborable|5|Viernes|5|129600
+Fin de semana|6|Sábado|5|129600
+Fin de semana|7|Domingo|6|155520
+-- I.2 lecturas por caneca
+caneca|tipo_residuo|lecturas
+------|------------|--------
+C1|Aprovechables|333334
+C2|No aprovechables|333333
+C3|Orgánicos|333333
+-- I.3 lecturas por franja horaria
+franja|hora_desde|hora_hasta|lecturas
+------|----------|----------|--------
+Madrugada|0|5|252720
+Mañana|6|11|252720
+Tarde|12|17|248320
+Noche|18|23|246240
+-- I.4 dias incompletos (menos de 25.920 lecturas = 3 canecas x 8.640 lecturas)
+fecha|nombre_dia|lecturas|ultima_lectura
+-----|----------|--------|--------------
+2026-11-04|Miércoles|15040|2026-11-04 13:55:30

@@ -1,0 +1,12 @@
+# Datos grandes y archivos binarios (no van al repositorio del sitio)
+datos/
+*.pbix
+
+# Contiene usuario y contraseña de SQL Server en texto
+servidor_canecas.py
+
+# Registros locales y herramientas
+automatizacion/logs/
+.codegraph/
+.claude/
+*.log
