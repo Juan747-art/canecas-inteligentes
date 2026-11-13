@@ -244,10 +244,11 @@
 
   <h4>Tramo A: de <code>Vertedero</code> a <code>VertederoDW</code> (el ETL)</h4>
   <ul>
-    <li><strong>Hoy es manual:</strong> el paquete <code>00_Maestro.dtsx</code> se ejecuta desde Visual Studio.</li>
+    <li><strong>Automático cada 5 minutos</strong> desde el 13 de noviembre de 2026. Una tarea del Programador de tareas de Windows («Canecas - ETL VertederoDW») ejecuta el paquete <code>00_Maestro.dtsx</code> con la utilidad <code>dtexec</code>, sin abrir Visual Studio. Corre con el usuario de Windows del proyecto y solo mientras el computador está encendido y con la sesión iniciada. Si una ejecución todavía no ha terminado, la siguiente se omite.</li>
+    <li><strong>Registro de cada ejecución.</strong> El script <code>automatizacion/ejecutar_etl.ps1</code> escribe una línea por ejecución con la hora, el resultado, la duración, el lote y las filas nuevas. La contraseña de SQL Server no está en el repositorio: se guarda cifrada con la cuenta de Windows.</li>
     <li><strong>El ETL ya es incremental.</strong> Las tablas de hechos de lecturas y eventos usan una marca de agua (el último identificador cargado, en <code>etl.ControlCarga</code>) y solo extraen lo nuevo. El registro lo confirma: las ejecuciones del 12 de noviembre extrajeron 0 lecturas y 0 eventos nuevos, y los conteos no cambiaron (1.000.933 lecturas y 7.741 eventos). Un índice único sobre el identificador de origen impide duplicados.</li>
-    <li><strong>Prueba de ejecución por línea de comandos:</strong> la utilidad <code>dtexec</code> está instalada, se conecta a las bases y ejecuta las tareas de control, pero se detiene en el primer flujo de datos con el error <code>0xC000F427</code>: fuera de Visual Studio, los flujos de datos exigen tener instalado Integration Services de una edición Standard o superior, y este equipo solo tiene SQL Server Express. La prueba no modificó los datos; dejó dos filas con estado «Error» en el registro del ETL.</li>
-    <li><strong>Qué falta para automatizarlo:</strong> instalar la característica Integration Services de SQL Server 2022 Developer Edition (gratuita, con licencia para desarrollo y pruebas, no para producción). Con eso, la tarea del Programador de tareas de Windows que ya está preparada en la carpeta <code>automatizacion/</code> ejecutaría el maestro cada 5 minutos y dejaría un registro con hora, resultado y filas cargadas.</li>
+    <li><strong>Cómo se logró.</strong> La primera prueba con <code>dtexec</code> se detuvo en el primer flujo de datos con el error <code>0xC000F427</code>: fuera de Visual Studio, los flujos de datos exigen Integration Services de una edición Standard o superior, y el equipo solo tenía SQL Server Express. Esa prueba no modificó datos; dejó dos filas con estado «Error» en el registro del ETL. Se instaló entonces la característica Integration Services de SQL Server 2022 Developer Edition (gratuita, con licencia para desarrollo y pruebas, no para producción), sin crear otra instancia del motor.</li>
+    <li><strong>Pruebas.</strong> Con Integration Services instalado, la ejecución manual (lote 61) y la primera ejecución de la tarea programada (lote 70, 13 de noviembre a la 1:06) terminaron bien, en 17 y 22 segundos, con 0 filas nuevas porque el data warehouse ya estaba al día; los conteos no cambiaron.</li>
   </ul>
 
   <h4>Tramo B: de <code>VertederoDW</code> a Power BI</h4>
@@ -627,7 +628,7 @@
     <li>El recorrido completo del dato funciona: de la ESP32 a la base operacional, de allí al data warehouse por medio del ETL en SSIS, y del data warehouse al análisis.</li>
     <li>El ETL carga 1.000.933 lecturas, 7.741 eventos y 3 alarmas sin rechazos ni duplicados, y es incremental: una segunda ejecución no vuelve a cargar lo existente.</li>
     <li>El análisis del escenario simulado produjo cinco conocimientos verificables y dos decisiones: recolectar también el domingo y hacer un vaciado adicional de C1 y C3 antes de las 18:00.</li>
-    <li>La integración interactiva del dashboard y la actualización automática quedaron preparadas, no terminadas.</li>
+    <li>El ETL se ejecuta solo cada 5 minutos. La actualización automática del informe publicado y su integración en el sitio quedaron preparadas, no terminadas.</li>
   </ul>
   <h3>Limitaciones</h3>
   <ul>
@@ -640,7 +641,7 @@
   <h3>Oportunidades de mejora</h3>
   <ul>
     <li>Dejar la maqueta encendida varios días para reunir datos reales suficientes y contrastarlos con la simulación.</li>
-    <li>Instalar Integration Services (edición Developer) para ejecutar el ETL de forma programada, y la puerta de enlace para actualizar el informe publicado.</li>
+    <li>Instalar la puerta de enlace de Power BI para que el informe publicado se actualice solo.</li>
     <li>Agregar un sensor de peso (celda de carga) para dejar de simular esa variable.</li>
     <li>Declarar en la base la relación entre <code>FactAlarmas.fecha_fin_key</code> y <code>DimFecha</code>.</li>
     <li>Guardar el usuario y la contraseña del servidor Python fuera del código.</li>

@@ -26,7 +26,7 @@ $log = Join-Path $CarpetaLog ("etl_{0:yyyy-MM}.log" -f (Get-Date))
 function Registrar([string]$linea) { Add-Content -Path $log -Value $linea -Encoding utf8 }
 
 # Evita que dos ejecuciones se crucen si una tarda mas que el intervalo de la tarea
-$mutex = New-Object System.Threading.Mutex($false, 'Global\CanecasETL')
+$mutex = New-Object System.Threading.Mutex($false, 'Local\CanecasETL')
 if (-not $mutex.WaitOne(0)) {
   Registrar ("{0:yyyy-MM-dd HH:mm:ss} | OMITIDA | otra ejecucion del ETL sigue en curso" -f (Get-Date))
   exit 0

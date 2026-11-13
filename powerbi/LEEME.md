@@ -1,4 +1,4 @@
-# Power BI: visuales por crear o ajustar y actualización de los datos
+In# Power BI: visuales por crear o ajustar y actualización de los datos
 
 El archivo `Tablero Vertedero.pbix` tiene hoy tres páginas («Estado actual», «Page 1» y «Page 2») y una tabla `Medidas`. Esta lista indica qué crear o ajustar para que el dashboard cumpla el punto 3 de la guía y coincida con los análisis del sitio.
 
