@@ -29,6 +29,21 @@
               "queryRef": "Medidas.Última lectura",
               "nativeQueryRef": "Última lectura",
               "displayName": "Fecha y hora de la última lectura"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Lecturas"
+                }
+              },
+              "queryRef": "Medidas.Lecturas",
+              "nativeQueryRef": "Lecturas",
+              "displayName": "Lecturas recibidas"
             }
           ]
         }
