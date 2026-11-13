@@ -7,6 +7,9 @@
 USE VertederoDW;
 SET NOCOUNT ON;
 DECLARE @desde_real INT = 20261106;
+/* Lectura de prueba del 13/11/2026 01:09, enviada a mano para verificar el ETL programado
+   (ids de origen 1.000.934 a 1.000.936). No es de la maqueta: se excluye. */
+DECLARE @prueba_desde BIGINT = 1000934, @prueba_hasta BIGINT = 1000936;
 
 PRINT '== R1. Lecturas reales por caneca ==';
 SELECT c.nombre AS caneca, COUNT(*) AS lecturas,
@@ -17,6 +20,7 @@ SELECT c.nombre AS caneca, COUNT(*) AS lecturas,
        SUM(CASE WHEN l.peso_g IS NULL THEN 1 ELSE 0 END) AS sin_peso
 FROM dbo.FactLecturas l JOIN dbo.DimCaneca c ON c.caneca_key = l.caneca_key
 WHERE l.fecha_key >= @desde_real
+  AND l.id_lectura_origen NOT BETWEEN @prueba_desde AND @prueba_hasta
 GROUP BY c.nombre ORDER BY 1;
 
 PRINT '== R2. Eventos reales por caneca y tipo ==';
@@ -29,11 +33,13 @@ GROUP BY c.nombre, t.tipo ORDER BY 1, 2;
 
 PRINT '== R3. Lecturas y eventos reales por fecha ==';
 SELECT f.fecha, f.nombre_dia,
-       (SELECT COUNT(*) FROM dbo.FactLecturas l WHERE l.fecha_key = f.fecha_key) AS lecturas,
+       (SELECT COUNT(*) FROM dbo.FactLecturas l WHERE l.fecha_key = f.fecha_key
+          AND l.id_lectura_origen NOT BETWEEN @prueba_desde AND @prueba_hasta) AS lecturas,
        (SELECT COUNT(*) FROM dbo.FactEventos e WHERE e.fecha_key = f.fecha_key) AS eventos
 FROM dbo.DimFecha f
 WHERE f.fecha_key >= @desde_real
-  AND EXISTS (SELECT 1 FROM dbo.FactLecturas l WHERE l.fecha_key = f.fecha_key)
+  AND EXISTS (SELECT 1 FROM dbo.FactLecturas l WHERE l.fecha_key = f.fecha_key
+              AND l.id_lectura_origen NOT BETWEEN @prueba_desde AND @prueba_hasta)
 ORDER BY f.fecha;
 
 PRINT '== R4. Alarmas reales ==';
@@ -43,7 +49,8 @@ PRINT '== R5. Estado actual: ultima lectura de cada caneca (lo que mostraria una
 SELECT c.nombre AS caneca, c.tipo_residuo, x.fecha_hora AS ultima_lectura, x.porcentaje, x.distancia_mm, s.estado
 FROM dbo.DimCaneca c
 CROSS APPLY (SELECT TOP 1 l.fecha_hora, l.porcentaje, l.distancia_mm, l.estado_key
-             FROM dbo.FactLecturas l WHERE l.caneca_key = c.caneca_key ORDER BY l.fecha_hora DESC, l.lectura_key DESC) x
+             FROM dbo.FactLecturas l WHERE l.caneca_key = c.caneca_key
+               AND l.id_lectura_origen NOT BETWEEN @prueba_desde AND @prueba_hasta ORDER BY l.fecha_hora DESC, l.lectura_key DESC) x
 JOIN dbo.DimEstadoLlenado s ON s.estado_key = x.estado_key
 WHERE c.caneca_key <> -1
 ORDER BY c.nombre;
