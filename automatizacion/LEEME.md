@@ -25,7 +25,7 @@ Condiciones:
 | Ejecución manual con `dtexec` | Lote 61: OK, 17 s, 0 filas nuevas (el DW ya estaba al día). |
 | Primera ejecución programada | Lote 70, 13/11/2026 01:06: OK, 21,8 s, 0 filas nuevas. |
 | Ejecutar dos veces | No duplica: el ETL es incremental por marca de agua (`etl.ControlCarga`) y un índice único por identificador de origen impide duplicados. No recarga el millón salvo que `RecargaCompleta` sea verdadero. |
-| De punta a punta (lecturas nuevas de la ESP32 → `FactLecturas` sube) | Pendiente: requiere lecturas nuevas en `Vertedero`. |
+| De punta a punta | 13/11/2026 01:09: lectura de prueba enviada a `servidor_canecas.py` (`/lectura`, 20/40/60 %, ids 1.000.934–1.000.936). Ejecución programada de las 01:11 (lote 79): «lecturas nuevas 3», `FactLecturas` de 1.000.933 a 1.000.936, 0 rechazadas. Esas 3 filas son de prueba, no de la maqueta. |
 
 ### Archivos
 
