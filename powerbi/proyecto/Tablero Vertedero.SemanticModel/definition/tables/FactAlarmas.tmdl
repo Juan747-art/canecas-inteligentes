@@ -44,11 +44,6 @@ table FactAlarmas
 		summarizeBy: none
 		sourceColumn: fecha_inicio
 
-		variation Variation
-			isDefault
-			relationship: be6708e0-3c48-479a-8846-eeda77259211
-			defaultHierarchy: LocalDateTable_fafc1acb-b8a7-4678-a107-126e149420bb.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 	column fecha_fin
@@ -57,11 +52,6 @@ table FactAlarmas
 		lineageTag: 1a1a7b54-e04d-49d6-9f1b-b586fe6786fa
 		summarizeBy: none
 		sourceColumn: fecha_fin
-
-		variation Variation
-			isDefault
-			relationship: 734855a7-7e61-4fcf-be4f-bac2c0eca195
-			defaultHierarchy: LocalDateTable_bd02d865-2c84-4b68-b3d6-e080cb21624a.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 

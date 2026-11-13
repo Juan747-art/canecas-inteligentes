@@ -62,11 +62,6 @@ table FactLecturas
 		summarizeBy: none
 		sourceColumn: fecha_hora
 
-		variation Variation
-			isDefault
-			relationship: c7fae6d8-b7d5-43d7-a95a-dd11b6a2bad9
-			defaultHierarchy: LocalDateTable_9203e62f-c0b9-413d-bcd7-3f4c08dbc414.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 	column porcentaje

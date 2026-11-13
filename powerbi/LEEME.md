@@ -41,6 +41,7 @@ Eventos = SUM ( FactEventos[cantidad] )
 
 - **Columnas calculadas**: `DimFecha[Tipo de día]` («Laborable» o «Fin de semana», a partir de `es_fin_de_semana`); `FactLecturas[Tramo de llenado]` (00-09 … 80-89, 90-100); `DimHora[Orden franja]` (oculta, calculada desde `hora_key`) para ordenar la franja como Madrugada, Mañana, Tarde y Noche. `hora_texto` se ordena por `hora_key`.
 - La tasa de bloqueo es la medida existente `[% intentos bloqueados]` = bloqueos ÷ (aperturas + bloqueos).
+- **Corrección del 13 de noviembre de 2026:** la relación `FactEventos.hora_key → DimHora` estaba **inactiva**, así que la hora y la franja no filtraban los eventos (las gráficas de aperturas por hora, aperturas por día y franja y la matriz multivariada repetían el total en cada hora o franja). Se activó. También se desactivó la fecha y hora automática (se quitaron las tablas ocultas `LocalDateTable_*` y `DateTableTemplate_*`, que ningún visual usaba). Respaldo del modelo anterior en `powerbi/respaldo/` (no se sube).
 
 ## Para cambiar el diseño
 
@@ -48,7 +49,9 @@ Con Power BI Desktop **cerrado**, se editan los archivos de `powerbi/proyecto`; 
 
 ## Valores de control (deben coincidir con el sitio)
 
-Con el filtro del período simulado: llenado promedio 57,36 %; lecturas ≥ 90 %: 16,26 %; aperturas 3.643 (93,41 por día); bloqueos 209; tasa de bloqueo 5,43 %; alarmas 3 (14,77 h en promedio); domingo: 133 bloqueos y tasa de 30,16 %; C3 × Noche × Fin de semana: 49,45 %.
+Con el filtro del período simulado: llenado promedio 57,36 %; lecturas ≥ 90 %: 16,26 %; aperturas 3.643 (93,41 por día); bloqueos 209; tasa de bloqueo 5,43 %; alarmas 3 (14,77 h en promedio); domingo: 133 bloqueos y tasa de 30,16 %; C3 × Noche × Fin de semana: 49,45 %. Aperturas por franja: Madrugada 39, Mañana 1.380, Tarde 1.437, Noche 787; bloqueos por franja: 9, 0, 64 y 136. Aperturas a las 12 h: 509.
+
+El formato de los números en la vista pública sigue el idioma del navegador de quien la abre (en español: 5,43 %); en Power BI Desktop depende de Archivo → Opciones → Archivo actual → Configuración regional.
 
 ## Publicar e integrar en el sitio
 
