@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "a45564ed341c4e0aa1e1",
   "position": {
-    "x": 24.0,
+    "x": 24,
     "y": 204,
     "z": 1800,
     "height": 244,
-    "width": 400.0,
+    "width": 400,
     "tabOrder": 1800
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimHora.hora_texto",
               "nativeQueryRef": "hora_texto",
+              "active": true,
               "displayName": "Hora"
             }
           ]
@@ -86,8 +87,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {

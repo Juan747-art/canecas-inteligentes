@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "8c1c8c7a5ed34b519e2e",
   "position": {
-    "x": 440.0,
+    "x": 440,
     "y": 204,
     "z": 1900,
     "height": 244,
-    "width": 400.0,
+    "width": 400,
     "tabOrder": 1900
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "FactLecturas.Tramo de llenado",
               "nativeQueryRef": "Tramo de llenado",
+              "active": true,
               "displayName": "Tramo de llenado (%)"
             }
           ]
@@ -67,8 +68,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "objects": {

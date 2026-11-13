@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "7a9e889d70c142e1a265",
   "position": {
-    "x": 24.0,
+    "x": 24,
     "y": 204,
     "z": 3000,
     "height": 262,
-    "width": 608.0,
+    "width": 608,
     "tabOrder": 3000
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimFecha.nombre_dia",
               "nativeQueryRef": "nombre_dia",
+              "active": true,
               "displayName": "Día"
             }
           ]
@@ -86,12 +87,26 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "objects": {
       "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#C8553D'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         {
           "properties": {
             "fill": {

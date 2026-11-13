@@ -606,7 +606,7 @@
       <tr><td>ETL en SSIS</td><td>Proyecto <code>VertederoETL</code> con 9 paquetes, carga incremental, registro y rechazos; conciliación con diferencia 0</td><td>Alcanzado</td></tr>
       <tr><td>Análisis</td><td>5 indicadores, 3 univariados, 3 bivariados y 1 multivariado, con consultas reproducibles</td><td>Alcanzado</td></tr>
       <tr><td>Conocimientos y decisiones</td><td>5 conocimientos con sus 8 elementos y 2 decisiones con sus 5 elementos</td><td>Alcanzado</td></tr>
-      <tr><td>Dashboard en Power BI integrado</td><td>Informe de cuatro páginas en Power BI Desktop (Estado actual, Uso y llenado, Bloqueos y alarmas, Más detalle) con los 5 indicadores y los análisis univariados, bivariados y multivariado; integración en el sitio preparada</td><td>Pendiente de publicar e integrar</td></tr>
+      <tr><td>Dashboard en Power BI integrado</td><td>Informe de cuatro páginas en Power BI Desktop (Estado actual, Uso y llenado, Bloqueos y alarmas, Más detalle) con los 5 indicadores y los análisis univariados, bivariados y multivariado, publicado con «Publicar en la web» e integrado en la sección Dashboard</td><td>Completo</td></tr>
       <tr><td>Actualización automática de los datos</td><td>Diagnóstico hecho y tarea programada preparada</td><td>Pendiente (requiere instalar Integration Services y la puerta de enlace)</td></tr>
       <tr><td>Sitio web publicado</td><td>Este sitio</td><td>Alcanzado</td></tr>
     </tbody>
@@ -625,7 +625,7 @@
     <li>El recorrido completo del dato funciona: de la ESP32 a la base operacional, de allí al data warehouse por medio del ETL en SSIS, y del data warehouse al análisis.</li>
     <li>El ETL carga 1.000.933 lecturas, 7.741 eventos y 3 alarmas sin rechazos ni duplicados, y es incremental: una segunda ejecución no vuelve a cargar lo existente.</li>
     <li>El análisis del escenario simulado produjo cinco conocimientos verificables y dos decisiones: recolectar también el domingo y hacer un vaciado adicional de C1 y C3 antes de las 18:00.</li>
-    <li>El ETL se ejecuta solo cada 5 minutos. La actualización automática del informe publicado y su integración en el sitio quedaron preparadas, no terminadas.</li>
+    <li>El ETL se ejecuta solo cada 5 minutos. El dashboard está publicado e integrado en este sitio; su actualización automática (puerta de enlace) quedó preparada, no terminada.</li>
   </ul>
   <h3>Limitaciones</h3>
   <ul>

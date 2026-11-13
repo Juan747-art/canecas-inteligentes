@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "d04e8b67999b43b7ae5f",
   "position": {
-    "x": 648.0,
+    "x": 648,
     "y": 204,
     "z": 3100,
     "height": 262,
-    "width": 608.0,
+    "width": 608,
     "tabOrder": 3100
   },
   "visual": {
@@ -183,7 +183,7 @@
             "rowSubtotals": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -240,31 +240,6 @@
         }
       ]
     },
-    "expansionStates": [
-      {
-        "roles": [
-          "Rows"
-        ],
-        "levels": [
-          {
-            "queryRefs": [
-              "DimCaneca.nombre"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "DimFecha.Tipo de día"
-            ],
-            "isPinned": true
-          }
-        ],
-        "root": {
-          "isToggled": true
-        }
-      }
-    ],
     "drillFilterOtherVisuals": true
   }
 }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "6ca327f9182d4fbca67c",
   "position": {
-    "x": 24.0,
+    "x": 24,
     "y": 92,
     "z": 3800,
     "height": 300,
-    "width": 608.0,
+    "width": 608,
     "tabOrder": 3800
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimEstadoLlenado.estado",
               "nativeQueryRef": "estado",
+              "active": true,
               "displayName": "Estado"
             }
           ]

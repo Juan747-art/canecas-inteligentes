@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "5c2938add8ea42028ec7",
   "position": {
-    "x": 648.0,
+    "x": 648,
     "y": 92,
     "z": 3900,
     "height": 300,
-    "width": 608.0,
+    "width": 608,
     "tabOrder": 3900
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimFecha.fecha",
               "nativeQueryRef": "fecha",
+              "active": true,
               "displayName": "Fecha"
             }
           ]
@@ -66,6 +67,7 @@
               },
               "queryRef": "Medidas.Llenado promedio %",
               "nativeQueryRef": "Llenado promedio %",
+              "active": true,
               "displayName": "Llenado promedio (%)"
             }
           ]

@@ -12,26 +12,26 @@ table DimHora
 
 	column hora_texto
 		dataType: string
-		sortByColumn: hora_key
 		lineageTag: 0e034917-ea52-4934-8bfb-2a9fb70b94e2
 		summarizeBy: none
 		sourceColumn: hora_texto
+		sortByColumn: hora_key
 
 		annotation SummarizationSetBy = Automatic
 
 	column franja
 		dataType: string
-		sortByColumn: 'Orden franja'
 		lineageTag: d6f5e412-9e8f-47cb-b134-21a17cdf1185
 		summarizeBy: none
 		sourceColumn: franja
+		sortByColumn: 'Orden franja'
 
 		annotation SummarizationSetBy = Automatic
 
 	column 'Orden franja' = SWITCH ( TRUE (), DimHora[hora_key] < 0, 0, DimHora[hora_key] < 6, 1, DimHora[hora_key] < 12, 2, DimHora[hora_key] < 18, 3, 4 )
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
 		lineageTag: 264b8bc8-3dc0-4145-b722-737ceb357966
 		summarizeBy: none
 

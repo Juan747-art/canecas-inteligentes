@@ -5,7 +5,6 @@ table Medidas
 		formatString: 0.00
 		lineageTag: 0627deac-80c5-4054-8bb3-9361f0ec35e5
 
-
 	measure 'Llenado máximo %' = MAX ( FactLecturas[porcentaje] )
 		formatString: 0
 		lineageTag: d3b00480-cc85-4984-b43b-0909223e6af9
@@ -14,11 +13,9 @@ table Medidas
 		formatString: 0.0
 		lineageTag: c5547509-283e-4c4d-9789-31c13266f932
 
-
 	measure 'Peso máximo (g)' = MAX ( FactLecturas[peso_g] )
 		formatString: 0.0
 		lineageTag: 122da631-4bf8-4223-8408-607f8ffaa068
-
 
 	measure Lecturas = COUNTROWS ( FactLecturas )
 		formatString: 0
@@ -30,7 +27,6 @@ table Medidas
 		formatString: 0.00%
 		lineageTag: ab6c27fe-0ff6-4f55-be7f-bd8c13b7b5a3
 
-
 	measure 'Llenado actual %' =
 			
 			VAR ultima = MAX ( FactLecturas[fecha_hora] )
@@ -38,14 +34,12 @@ table Medidas
 		formatString: 0
 		lineageTag: b144f735-708f-4ccc-801a-1b9b08a5a237
 
-
 	measure 'Peso actual (g)' =
 			
 			VAR ultima = CALCULATE ( MAX ( FactLecturas[fecha_hora] ), NOT ISBLANK ( FactLecturas[peso_g] ) )
 			RETURN CALCULATE ( AVERAGE ( FactLecturas[peso_g] ), FactLecturas[fecha_hora] = ultima )
 		formatString: 0.0
 		lineageTag: 8334e5bf-126d-4bb8-b311-afe951d86f87
-
 
 	measure Aperturas = CALCULATE ( SUM ( FactEventos[cantidad] ), DimTipoEvento[tipo] = "apertura" )
 		formatString: 0
@@ -59,7 +53,6 @@ table Medidas
 		formatString: 0.00%
 		lineageTag: 58f6f3c1-e93b-43e2-9b8e-d381b7998a2d
 
-
 	measure Alarmas = COUNTROWS ( FactAlarmas )
 		formatString: 0
 		lineageTag: 81b5d8d2-7be3-42b4-913b-6c60b47370de
@@ -68,11 +61,9 @@ table Medidas
 		formatString: 0.00
 		lineageTag: 0fdfb2f6-71a3-452f-bae0-5c53da856c85
 
-
 	measure 'Gramos por punto de llenado' = DIVIDE ( [Peso promedio (g)], [Llenado promedio %] )
 		formatString: 0.00
 		lineageTag: 728f3c21-13c5-436c-8ace-07616011a16d
-
 
 	measure '% lecturas ≥ 90' = DIVIDE ( CALCULATE ( [Lecturas], FactLecturas[porcentaje] >= 90 ), [Lecturas] ) * 100
 		formatString: 0.00

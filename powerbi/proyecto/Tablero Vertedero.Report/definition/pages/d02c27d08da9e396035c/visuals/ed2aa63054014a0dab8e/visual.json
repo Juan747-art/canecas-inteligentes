@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "ed2aa63054014a0dab8e",
   "position": {
-    "x": 336.0,
+    "x": 336,
     "y": 482,
     "z": 3300,
     "height": 214,
-    "width": 296.0,
+    "width": 296,
     "tabOrder": 3300
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimCaneca.nombre",
               "nativeQueryRef": "nombre",
+              "active": true,
               "displayName": "Caneca"
             }
           ]
@@ -67,8 +68,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "objects": {

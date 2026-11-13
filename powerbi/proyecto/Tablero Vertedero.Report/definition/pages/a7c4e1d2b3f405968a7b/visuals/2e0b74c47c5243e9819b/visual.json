@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "2e0b74c47c5243e9819b",
   "position": {
-    "x": 24.0,
+    "x": 24,
     "y": 408,
     "z": 4000,
     "height": 288,
-    "width": 816.0,
+    "width": 816,
     "tabOrder": 4000
   },
   "visual": {
@@ -28,6 +28,7 @@
               },
               "queryRef": "DimFecha.fecha",
               "nativeQueryRef": "fecha",
+              "active": true,
               "displayName": "Fecha"
             }
           ]
@@ -86,8 +87,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {
