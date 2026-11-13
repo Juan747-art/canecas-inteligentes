@@ -1,4 +1,4 @@
-In# Power BI: visuales por crear o ajustar y actualización de los datos
+# Power BI: visuales por crear o ajustar y actualización de los datos
 
 El archivo `Tablero Vertedero.pbix` tiene hoy tres páginas («Estado actual», «Page 1» y «Page 2») y una tabla `Medidas`. Esta lista indica qué crear o ajustar para que el dashboard cumpla el punto 3 de la guía y coincida con los análisis del sitio.
 
@@ -101,4 +101,4 @@ Con el filtro del período simulado: llenado promedio 57,36 %; lecturas ≥ 90 %
   3. Tres medidores (uno por caneca, con filtro de visual por `DimCaneca[nombre]`) y una tarjeta con `MAX(FactLecturas[fecha_hora])`.
   4. Clic en el lienzo → panel Formato → **Actualización de página** → Activar → cada 10 segundos.
 - En Desktop no hay intervalo mínimo; en el servicio con capacidad compartida el mínimo es **30 minutos**. Úselo solo en Desktop.
-- Mostrará datos nuevos solo si el ETL (tramo A) está cargando el data warehouse. Mientras el ETL sea manual, para una demostración en vivo se puede apuntar este informe a la base `Vertedero` (tablas `Lecturas` y `Canecas`), que recibe las lecturas de la ESP32 cada 10 segundos.
+- El ETL (tramo A) carga el data warehouse cada 5 minutos, así que este informe muestra lecturas con hasta 5 minutos de retraso. Si en la demostración se necesita ver cada lectura al instante, se puede apuntar el informe a la base `Vertedero` (tablas `Lecturas` y `Canecas`), que recibe las lecturas de la ESP32 cada 10 segundos.
