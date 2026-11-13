@@ -13,26 +13,6 @@
     "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "FactEventos"
-                    }
-                  },
-                  "Property": "Caneca y tipo de día"
-                }
-              },
-              "queryRef": "FactEventos.Caneca y tipo de día",
-              "nativeQueryRef": "Caneca y tipo de día",
-              "displayName": "Caneca · tipo de día",
-              "active": true
-            }
-          ]
-        },
         "Columns": {
           "projections": [
             {
@@ -48,8 +28,28 @@
               },
               "queryRef": "DimHora.franja",
               "nativeQueryRef": "franja",
-              "displayName": "Franja",
-              "active": true
+              "active": true,
+              "displayName": "Franja"
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactEventos"
+                    }
+                  },
+                  "Property": "Caneca y tipo de día"
+                }
+              },
+              "queryRef": "FactEventos.Caneca y tipo de día",
+              "nativeQueryRef": "Caneca y tipo de día",
+              "active": true,
+              "displayName": "Caneca · tipo de día"
             }
           ]
         },
@@ -118,8 +118,7 @@
             },
             "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "objects": {

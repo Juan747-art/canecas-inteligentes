@@ -789,6 +789,27 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "facteventos.caneca_y_tipo_de_día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "FactEventos",
+			          "ConceptualProperty": "Caneca y tipo de día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Caneca · tipo de día": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}
