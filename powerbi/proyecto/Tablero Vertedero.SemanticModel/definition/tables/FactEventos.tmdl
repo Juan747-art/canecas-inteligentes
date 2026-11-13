@@ -87,6 +87,13 @@ table FactEventos
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Caneca y tipo de día' = RELATED ( DimCaneca[nombre] ) & " · " & RELATED ( DimFecha[Tipo de día] )
+		dataType: string
+		lineageTag: d3a25a7c-86b2-4872-ab7c-d4835e6988f9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactEventos = m
 		mode: import
 		source =

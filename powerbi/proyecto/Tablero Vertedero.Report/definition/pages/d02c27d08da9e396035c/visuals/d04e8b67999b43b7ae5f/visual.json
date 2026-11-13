@@ -20,31 +20,15 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimCaneca"
+                      "Entity": "FactEventos"
                     }
                   },
-                  "Property": "nombre"
+                  "Property": "Caneca y tipo de día"
                 }
               },
-              "queryRef": "DimCaneca.nombre",
-              "nativeQueryRef": "nombre",
-              "displayName": "Caneca",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "DimFecha"
-                    }
-                  },
-                  "Property": "Tipo de día"
-                }
-              },
-              "queryRef": "DimFecha.Tipo de día",
-              "nativeQueryRef": "Tipo de día",
-              "displayName": "Tipo de día",
+              "queryRef": "FactEventos.Caneca y tipo de día",
+              "nativeQueryRef": "Caneca y tipo de día",
+              "displayName": "Caneca · tipo de día",
               "active": true
             }
           ]
@@ -118,6 +102,24 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactEventos"
+                  }
+                },
+                "Property": "Caneca y tipo de día"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": false
       }
     },
     "objects": {
