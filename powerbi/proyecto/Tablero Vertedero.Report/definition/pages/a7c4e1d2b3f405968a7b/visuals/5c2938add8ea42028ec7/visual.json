@@ -1,0 +1,138 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5c2938add8ea42028ec7",
+  "position": {
+    "x": 648.0,
+    "y": 92,
+    "z": 3900,
+    "height": 300,
+    "width": 608.0,
+    "tabOrder": 3900
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimFecha"
+                    }
+                  },
+                  "Property": "fecha"
+                }
+              },
+              "queryRef": "DimFecha.fecha",
+              "nativeQueryRef": "fecha",
+              "displayName": "Fecha"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimCaneca"
+                    }
+                  },
+                  "Property": "nombre"
+                }
+              },
+              "queryRef": "DimCaneca.nombre",
+              "nativeQueryRef": "nombre",
+              "displayName": "Caneca"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Llenado promedio %"
+                }
+              },
+              "queryRef": "Medidas.Llenado promedio %",
+              "nativeQueryRef": "Llenado promedio %",
+              "displayName": "Llenado promedio (%)"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Peso promedio (g)"
+                }
+              },
+              "queryRef": "Medidas.Peso promedio (g)",
+              "nativeQueryRef": "Peso promedio (g)",
+              "displayName": "Peso simulado promedio (g)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Llenado y peso simulado por día (%, g)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cada punto es un día · Período simulado, 27 sep – 4 nov 2026'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

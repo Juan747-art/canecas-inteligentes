@@ -1,0 +1,115 @@
+table Medidas
+	lineageTag: 21024146-f488-4023-bf3d-644e0c17a658
+
+	measure 'Llenado promedio %' = AVERAGE ( FactLecturas[porcentaje] )
+		formatString: 0.00
+		lineageTag: 0627deac-80c5-4054-8bb3-9361f0ec35e5
+
+
+	measure 'Llenado máximo %' = MAX ( FactLecturas[porcentaje] )
+		formatString: 0
+		lineageTag: d3b00480-cc85-4984-b43b-0909223e6af9
+
+	measure 'Peso promedio (g)' = AVERAGE ( FactLecturas[peso_g] )
+		formatString: 0.0
+		lineageTag: c5547509-283e-4c4d-9789-31c13266f932
+
+
+	measure 'Peso máximo (g)' = MAX ( FactLecturas[peso_g] )
+		formatString: 0.0
+		lineageTag: 122da631-4bf8-4223-8408-607f8ffaa068
+
+
+	measure Lecturas = COUNTROWS ( FactLecturas )
+		formatString: 0
+		lineageTag: 933f8223-3e0b-4a2e-bf4c-d2e4b3a6b4de
+
+	measure '% lecturas válidas' =
+			
+			DIVIDE ( CALCULATE ( [Lecturas], FactLecturas[lectura_valida] = TRUE () ), [Lecturas] )
+		formatString: 0.00%
+		lineageTag: ab6c27fe-0ff6-4f55-be7f-bd8c13b7b5a3
+
+
+	measure 'Llenado actual %' =
+			
+			VAR ultima = MAX ( FactLecturas[fecha_hora] )
+			RETURN CALCULATE ( AVERAGE ( FactLecturas[porcentaje] ), FactLecturas[fecha_hora] = ultima )
+		formatString: 0
+		lineageTag: b144f735-708f-4ccc-801a-1b9b08a5a237
+
+
+	measure 'Peso actual (g)' =
+			
+			VAR ultima = CALCULATE ( MAX ( FactLecturas[fecha_hora] ), NOT ISBLANK ( FactLecturas[peso_g] ) )
+			RETURN CALCULATE ( AVERAGE ( FactLecturas[peso_g] ), FactLecturas[fecha_hora] = ultima )
+		formatString: 0.0
+		lineageTag: 8334e5bf-126d-4bb8-b311-afe951d86f87
+
+
+	measure Aperturas = CALCULATE ( SUM ( FactEventos[cantidad] ), DimTipoEvento[tipo] = "apertura" )
+		formatString: 0
+		lineageTag: 771324be-0644-4db7-b4fc-1260d7c53e92
+
+	measure 'Bloqueos por caneca llena' = CALCULATE ( SUM ( FactEventos[cantidad] ), DimTipoEvento[tipo] = "bloqueo_llena" )
+		formatString: 0
+		lineageTag: e518866d-7572-4993-91fb-77dc37199b2e
+
+	measure '% intentos bloqueados' = DIVIDE ( [Bloqueos por caneca llena], [Aperturas] + [Bloqueos por caneca llena] )
+		formatString: 0.00%
+		lineageTag: 58f6f3c1-e93b-43e2-9b8e-d381b7998a2d
+
+
+	measure Alarmas = COUNTROWS ( FactAlarmas )
+		formatString: 0
+		lineageTag: 81b5d8d2-7be3-42b4-913b-6c60b47370de
+
+	measure 'Horas en alarma' = DIVIDE ( SUM ( FactAlarmas[duracion_min] ), 60 )
+		formatString: 0.00
+		lineageTag: 0fdfb2f6-71a3-452f-bae0-5c53da856c85
+
+
+	measure 'Gramos por punto de llenado' = DIVIDE ( [Peso promedio (g)], [Llenado promedio %] )
+		formatString: 0.00
+		lineageTag: 728f3c21-13c5-436c-8ace-07616011a16d
+
+
+	measure '% lecturas ≥ 90' = DIVIDE ( CALCULATE ( [Lecturas], FactLecturas[porcentaje] >= 90 ), [Lecturas] ) * 100
+		formatString: 0.00
+		lineageTag: befa7297-b5c7-4cb0-b2b5-646433eec860
+
+	measure 'Mediana de llenado %' = MEDIAN ( FactLecturas[porcentaje] )
+		formatString: 0.00
+		lineageTag: 7a3bd2ce-68f1-41ee-b3dc-e32941adcdd9
+
+	measure 'Aperturas por día' = DIVIDE ( [Aperturas], DISTINCTCOUNT ( FactLecturas[fecha_key] ) )
+		formatString: 0.00
+		lineageTag: 0cea8c9c-df21-428c-99f6-e9908223a5f1
+
+	measure 'Horas promedio de alarma' = DIVIDE ( SUM ( FactAlarmas[duracion_min] ), 60 * [Alarmas] )
+		formatString: 0.00
+		lineageTag: ec0fb26e-9663-4a29-af28-19339dc21c7d
+
+	measure Eventos = SUM ( FactEventos[cantidad] )
+		formatString: #,0
+		lineageTag: 72f430b2-8dba-40f1-9b57-a3a7ceac03d2
+
+	measure '% de las lecturas' = DIVIDE ( [Lecturas], CALCULATE ( [Lecturas], ALLSELECTED ( FactLecturas[Tramo de llenado] ) ) )
+		formatString: 0.00%
+		lineageTag: 91f2a6ff-65b5-424e-ae86-5ea6fa631b93
+
+	measure 'Última lectura' = MAX ( FactLecturas[fecha_hora] )
+		formatString: General Date
+		lineageTag: 56b7f76b-7eb0-4b0a-b6c5-f5f824cddaf4
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

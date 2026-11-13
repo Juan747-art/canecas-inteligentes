@@ -1,0 +1,119 @@
+table DimFecha
+	lineageTag: cbb9a00a-73e3-432b-a9ad-ef386d20a091
+	dataCategory: Time
+
+	column fecha_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 1840b29d-b2d6-4529-8445-9afa5146dc9f
+		summarizeBy: none
+		sourceColumn: fecha_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: b95d252e-aa20-4de1-b6ef-42ec4bb59916
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column anio
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f97a837-fd9f-4eac-b9b3-17a9806e77c5
+		summarizeBy: sum
+		sourceColumn: anio
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: c82fad7f-dd68-4878-a11e-bf59e08056f1
+		summarizeBy: sum
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_mes
+		dataType: string
+		lineageTag: fc853d7e-5db4-4f7f-bc66-47adcf2da276
+		summarizeBy: none
+		sourceColumn: nombre_mes
+		sortByColumn: mes
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia
+		dataType: int64
+		formatString: 0
+		lineageTag: 3977f674-7dc1-41c2-9849-d8ff20431efb
+		summarizeBy: sum
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 0cccbdd2-873d-4807-9622-036746b518e7
+		summarizeBy: sum
+		sourceColumn: dia_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_dia
+		dataType: string
+		lineageTag: 00f5ef04-5d2c-44da-af15-bb43c05034cd
+		summarizeBy: none
+		sourceColumn: nombre_dia
+		sortByColumn: dia_semana
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column semana_anio
+		dataType: int64
+		formatString: 0
+		lineageTag: 8ecb53b9-2b6b-4edb-929b-9704ad378511
+		summarizeBy: sum
+		sourceColumn: semana_anio
+
+		annotation SummarizationSetBy = Automatic
+
+	column es_fin_de_semana
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 66ab0f4f-f74e-48c2-9933-fb2a3d6c5d4e
+		summarizeBy: none
+		sourceColumn: es_fin_de_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tipo de día' = IF ( DimFecha[es_fin_de_semana], "Fin de semana", "Laborable" )
+		dataType: string
+		lineageTag: 311f3a92-5f35-4a4e-aed4-bf88703cab63
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimFecha = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "DimFecha"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

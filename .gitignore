@@ -2,6 +2,11 @@
 datos/
 *.pbix
 
+# Proyecto de Power BI: caché de datos y configuración local
+powerbi/proyecto/**/.pbi/cache.abf
+powerbi/proyecto/**/.pbi/localSettings.json
+powerbi/respaldo/
+
 # Contiene usuario y contraseña de SQL Server en texto
 servidor_canecas.py
 

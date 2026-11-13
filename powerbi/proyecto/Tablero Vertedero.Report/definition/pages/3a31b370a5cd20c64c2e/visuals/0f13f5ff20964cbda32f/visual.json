@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0f13f5ff20964cbda32f",
+  "position": {
+    "x": 24,
+    "y": 88,
+    "z": 1700,
+    "height": 100,
+    "width": 1232,
+    "tabOrder": 1700
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Llenado promedio %"
+                }
+              },
+              "queryRef": "Medidas.Llenado promedio %",
+              "nativeQueryRef": "Llenado promedio %",
+              "displayName": "Llenado promedio (%)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "% lecturas ≥ 90"
+                }
+              },
+              "queryRef": "Medidas.% lecturas ≥ 90",
+              "nativeQueryRef": "% lecturas ≥ 90",
+              "displayName": "Lecturas ≥ 90 % (% del total)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Aperturas por día"
+                }
+              },
+              "queryRef": "Medidas.Aperturas por día",
+              "nativeQueryRef": "Aperturas por día",
+              "displayName": "Aperturas por día"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Lecturas"
+                }
+              },
+              "queryRef": "Medidas.Lecturas",
+              "nativeQueryRef": "Lecturas",
+              "displayName": "Lecturas analizadas"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,123 @@
+table FactAlarmas
+	lineageTag: 866716c1-bd1d-4346-ba2c-b07e378dca7a
+
+	column alarma_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 530d03d9-9a47-4829-818a-257147ca60c8
+		summarizeBy: sum
+		sourceColumn: alarma_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_alarma_origen
+		dataType: int64
+		formatString: 0
+		lineageTag: 6215f32f-cde0-4905-9278-c69cbb317efd
+		summarizeBy: sum
+		sourceColumn: id_alarma_origen
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 234deb2d-2888-405a-955a-cbd04ff394d0
+		summarizeBy: none
+		sourceColumn: fecha_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e9f0ba1-2060-49af-b36f-87acd5c7d084
+		summarizeBy: none
+		sourceColumn: hora_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_inicio
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3f83bd25-d7bb-4033-a9f2-4075bdf1ea30
+		summarizeBy: none
+		sourceColumn: fecha_inicio
+
+		variation Variation
+			isDefault
+			relationship: be6708e0-3c48-479a-8846-eeda77259211
+			defaultHierarchy: LocalDateTable_fafc1acb-b8a7-4678-a107-126e149420bb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_fin
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1a1a7b54-e04d-49d6-9f1b-b586fe6786fa
+		summarizeBy: none
+		sourceColumn: fecha_fin
+
+		variation Variation
+			isDefault
+			relationship: 734855a7-7e61-4fcf-be4f-bac2c0eca195
+			defaultHierarchy: LocalDateTable_bd02d865-2c84-4b68-b3d6-e080cb21624a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column duracion_min
+		dataType: int64
+		formatString: 0
+		lineageTag: 336196c8-7b85-4f6c-a228-0fe001547df0
+		summarizeBy: sum
+		sourceColumn: duracion_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_c1
+		dataType: int64
+		formatString: 0
+		lineageTag: 396461e1-f0dd-402f-a4e9-3d3a9db3820b
+		summarizeBy: sum
+		sourceColumn: pct_c1
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_c2
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c7d7f4d-fd87-4eb6-9fd2-2a43be49f9e3
+		summarizeBy: sum
+		sourceColumn: pct_c2
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_c3
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c085266-a669-43dc-b78a-4c5d5b235359
+		summarizeBy: sum
+		sourceColumn: pct_c3
+
+		annotation SummarizationSetBy = Automatic
+
+	column activa
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0c932137-71fc-4d24-aa61-695f2c398238
+		summarizeBy: none
+		sourceColumn: activa
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactAlarmas = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "FactAlarmas"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

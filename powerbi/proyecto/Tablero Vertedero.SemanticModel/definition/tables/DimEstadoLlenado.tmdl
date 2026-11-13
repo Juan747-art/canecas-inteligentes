@@ -1,0 +1,49 @@
+table DimEstadoLlenado
+	lineageTag: 98f06c97-49e1-4795-a946-c6fc7ffc51c1
+
+	column estado_key
+		dataType: int64
+		formatString: 0
+		lineageTag: d009c275-33a0-4f8d-8386-bd0dc281a1d3
+		summarizeBy: none
+		sourceColumn: estado_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado
+		dataType: string
+		lineageTag: d67145e4-cd88-4947-9de3-d29a783c9e42
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column desde_pct
+		dataType: int64
+		formatString: 0
+		lineageTag: cd314d36-b94e-4f21-823a-549bd215ee2d
+		summarizeBy: none
+		sourceColumn: desde_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column hasta_pct
+		dataType: int64
+		formatString: 0
+		lineageTag: 385bc4b6-a815-4412-b9a9-b5cb9861d674
+		summarizeBy: none
+		sourceColumn: hasta_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEstadoLlenado = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "DimEstadoLlenado"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

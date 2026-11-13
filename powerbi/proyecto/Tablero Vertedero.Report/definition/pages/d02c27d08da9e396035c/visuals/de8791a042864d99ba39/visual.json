@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "de8791a042864d99ba39",
+  "position": {
+    "x": 24,
+    "y": 88,
+    "z": 2900,
+    "height": 100,
+    "width": 1232,
+    "tabOrder": 2900
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Bloqueos por caneca llena"
+                }
+              },
+              "queryRef": "Medidas.Bloqueos por caneca llena",
+              "nativeQueryRef": "Bloqueos por caneca llena",
+              "displayName": "Bloqueos por caneca llena"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "% intentos bloqueados"
+                }
+              },
+              "queryRef": "Medidas.% intentos bloqueados",
+              "nativeQueryRef": "% intentos bloqueados",
+              "displayName": "Tasa de bloqueo (% de los intentos)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Alarmas"
+                }
+              },
+              "queryRef": "Medidas.Alarmas",
+              "nativeQueryRef": "Alarmas",
+              "displayName": "Alarmas conjuntas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Horas promedio de alarma"
+                }
+              },
+              "queryRef": "Medidas.Horas promedio de alarma",
+              "nativeQueryRef": "Horas promedio de alarma",
+              "displayName": "Duración promedio de alarma (h)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

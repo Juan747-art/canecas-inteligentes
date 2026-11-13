@@ -1,0 +1,50 @@
+table DimHora
+	lineageTag: df25cff0-0866-4ae6-acde-041b89530325
+
+	column hora_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a12d3cfc-9936-4372-9434-502c216767fb
+		summarizeBy: none
+		sourceColumn: hora_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_texto
+		dataType: string
+		sortByColumn: hora_key
+		lineageTag: 0e034917-ea52-4934-8bfb-2a9fb70b94e2
+		summarizeBy: none
+		sourceColumn: hora_texto
+
+		annotation SummarizationSetBy = Automatic
+
+	column franja
+		dataType: string
+		sortByColumn: 'Orden franja'
+		lineageTag: d6f5e412-9e8f-47cb-b134-21a17cdf1185
+		summarizeBy: none
+		sourceColumn: franja
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Orden franja' = SWITCH ( TRUE (), DimHora[hora_key] < 0, 0, DimHora[hora_key] < 6, 1, DimHora[hora_key] < 12, 2, DimHora[hora_key] < 18, 3, 4 )
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 264b8bc8-3dc0-4145-b722-737ceb357966
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimHora = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "DimHora"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

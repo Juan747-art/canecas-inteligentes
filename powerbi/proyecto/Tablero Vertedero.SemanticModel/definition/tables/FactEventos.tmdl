@@ -1,0 +1,100 @@
+table FactEventos
+	lineageTag: 9a6fd36d-cc4e-4118-a2db-4c03eee2167f
+
+	column evento_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 42679960-2520-4bfb-83dd-199a65fe7dce
+		summarizeBy: sum
+		sourceColumn: evento_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_evento_origen
+		dataType: int64
+		formatString: 0
+		lineageTag: 23b612b7-6bce-440b-b732-94eb026bd063
+		summarizeBy: sum
+		sourceColumn: id_evento_origen
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 03f5999a-9b07-4f8a-9789-9e3d19eb9518
+		summarizeBy: none
+		sourceColumn: fecha_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 0cad03ea-b9ef-4b73-a751-08d702f72a6a
+		summarizeBy: sum
+		sourceColumn: hora_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column caneca_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 0706233c-d068-456b-ac0d-295a61300e39
+		summarizeBy: none
+		sourceColumn: caneca_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_evento_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 88132b39-d5d6-4ac5-8470-585b0d004eaa
+		summarizeBy: none
+		sourceColumn: tipo_evento_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_hora
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1671c98c-7683-483c-831f-c134cf0b1765
+		summarizeBy: none
+		sourceColumn: fecha_hora
+
+		variation Variation
+			isDefault
+			relationship: b9dfd043-d96b-4d04-ab1a-2f5f83f7f8a9
+			defaultHierarchy: LocalDateTable_d4a3ecba-b699-44d8-a7f0-677173ea2703.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column porcentaje
+		dataType: int64
+		formatString: 0
+		lineageTag: 049d9174-036f-45cd-903e-5cf4db51f9d3
+		summarizeBy: sum
+		sourceColumn: porcentaje
+
+		annotation SummarizationSetBy = Automatic
+
+	column cantidad
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c682d9e-7cba-4f69-8712-fb3e8ec63531
+		summarizeBy: sum
+		sourceColumn: cantidad
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactEventos = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "FactEventos"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

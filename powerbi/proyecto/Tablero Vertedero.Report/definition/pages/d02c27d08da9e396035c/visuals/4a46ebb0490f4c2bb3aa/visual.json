@@ -1,0 +1,174 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "4a46ebb0490f4c2bb3aa",
+  "position": {
+    "x": 648.0,
+    "y": 482,
+    "z": 3400,
+    "height": 214,
+    "width": 608.0,
+    "tabOrder": 3400
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "fecha_inicio"
+                }
+              },
+              "queryRef": "FactAlarmas.fecha_inicio",
+              "nativeQueryRef": "fecha_inicio",
+              "displayName": "Inicio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "fecha_fin"
+                }
+              },
+              "queryRef": "FactAlarmas.fecha_fin",
+              "nativeQueryRef": "fecha_fin",
+              "displayName": "Fin"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "duracion_min"
+                }
+              },
+              "queryRef": "FactAlarmas.duracion_min",
+              "nativeQueryRef": "duracion_min",
+              "displayName": "Duración (min)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "pct_c1"
+                }
+              },
+              "queryRef": "FactAlarmas.pct_c1",
+              "nativeQueryRef": "pct_c1",
+              "displayName": "C1 (%)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "pct_c2"
+                }
+              },
+              "queryRef": "FactAlarmas.pct_c2",
+              "nativeQueryRef": "pct_c2",
+              "displayName": "C2 (%)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactAlarmas"
+                    }
+                  },
+                  "Property": "pct_c3"
+                }
+              },
+              "queryRef": "FactAlarmas.pct_c3",
+              "nativeQueryRef": "pct_c3",
+              "displayName": "C3 (%)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactAlarmas"
+                  }
+                },
+                "Property": "fecha_inicio"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Alarmas conjuntas: inicio, fin, duración (min) y llenado al activarse (%)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Indicador 5 · Período simulado, 27 sep – 4 nov 2026'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

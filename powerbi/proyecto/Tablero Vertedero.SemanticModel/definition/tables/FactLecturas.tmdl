@@ -1,0 +1,126 @@
+table FactLecturas
+	lineageTag: d0cf8c2a-b068-47da-97b5-24caacad58bb
+
+	column lectura_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 8217fe83-e6ec-4352-a5cc-ba6560ab0887
+		summarizeBy: sum
+		sourceColumn: lectura_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_lectura_origen
+		dataType: int64
+		formatString: 0
+		lineageTag: c4f84552-f42d-47f8-bf29-9e7b07c768ac
+		summarizeBy: sum
+		sourceColumn: id_lectura_origen
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 2706d8ec-5627-4031-ba2a-7ab02f162a02
+		summarizeBy: none
+		sourceColumn: fecha_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_key
+		dataType: int64
+		formatString: 0
+		lineageTag: ef72a289-17c6-457f-bc9e-22b7a9613eb6
+		summarizeBy: none
+		sourceColumn: hora_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column caneca_key
+		dataType: int64
+		formatString: 0
+		lineageTag: b3d7ac2f-c491-415f-9a14-81acd59d3790
+		summarizeBy: none
+		sourceColumn: caneca_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 14449721-d1d8-4490-bb55-094a401483b9
+		summarizeBy: none
+		sourceColumn: estado_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_hora
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f68f0d0d-725e-4608-9ae4-e26ff8495241
+		summarizeBy: none
+		sourceColumn: fecha_hora
+
+		variation Variation
+			isDefault
+			relationship: c7fae6d8-b7d5-43d7-a95a-dd11b6a2bad9
+			defaultHierarchy: LocalDateTable_9203e62f-c0b9-413d-bcd7-3f4c08dbc414.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column porcentaje
+		dataType: int64
+		formatString: 0
+		lineageTag: 58797bd8-ff33-4fff-b7da-e05021fbbfe0
+		summarizeBy: sum
+		sourceColumn: porcentaje
+
+		annotation SummarizationSetBy = Automatic
+
+	column peso_g
+		dataType: double
+		lineageTag: f238caa9-0d05-4066-828e-e437b5a45b7b
+		summarizeBy: sum
+		sourceColumn: peso_g
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column distancia_mm
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bbbe3df-55ff-48c0-87ac-e091f0a0c4b5
+		summarizeBy: sum
+		sourceColumn: distancia_mm
+
+		annotation SummarizationSetBy = Automatic
+
+	column lectura_valida
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 74b5ee65-0c5f-4aa0-8ee7-73d80a60535d
+		summarizeBy: none
+		sourceColumn: lectura_valida
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tramo de llenado' = IF ( FactLecturas[porcentaje] >= 90, "90-100", FORMAT ( INT ( FactLecturas[porcentaje] / 10 ) * 10, "00" ) & "-" & FORMAT ( INT ( FactLecturas[porcentaje] / 10 ) * 10 + 9, "00" ) )
+		dataType: string
+		lineageTag: 2e56037b-f4e0-47e3-909c-41d3f61ab28f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactLecturas = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "FactLecturas"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

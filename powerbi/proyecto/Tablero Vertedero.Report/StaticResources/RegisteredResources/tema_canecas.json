@@ -1,0 +1,94 @@
+{
+  "name": "Canecas Inteligentes",
+  "dataColors": ["#7D8B99", "#2F3437", "#2E8B57", "#C8553D", "#3D6FB4", "#8A6FB0", "#D9A21B", "#5B6663"],
+  "foreground": "#1C2321",
+  "foregroundNeutralSecondary": "#5B6663",
+  "foregroundNeutralTertiary": "#8A9490",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F6F7F4",
+  "backgroundNeutral": "#DFE3DE",
+  "tableAccent": "#1F6F54",
+  "good": "#2E8B57",
+  "neutral": "#D9A21B",
+  "bad": "#C8553D",
+  "maximum": "#C8553D",
+  "center": "#F2C462",
+  "minimum": "#E3F1EA",
+  "textClasses": {
+    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 12, "color": "#1C2321" },
+    "header": { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#1C2321" },
+    "label": { "fontFace": "Segoe UI", "fontSize": 10, "color": "#5B6663" },
+    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 26, "color": "#1F6F54" },
+    "largeTitle": { "fontFace": "Segoe UI Semibold", "fontSize": 18, "color": "#1C2321" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [{ "show": true, "fontFamily": "Segoe UI Semibold", "fontSize": 12, "fontColor": { "solid": { "color": "#1C2321" } }, "alignment": "left" }],
+        "subTitle": [{ "fontFamily": "Segoe UI", "fontSize": 9, "fontColor": { "solid": { "color": "#5B6663" } } }],
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#DFE3DE" } }, "radius": 10 }],
+        "dropShadow": [{ "show": false }],
+        "padding": [{ "top": 10, "bottom": 10, "left": 12, "right": 12 }],
+        "visualHeader": [{ "show": true }]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#F6F7F4" } }, "transparency": 0 }],
+        "outspace": [{ "color": { "solid": { "color": "#F6F7F4" } } }]
+      }
+    },
+    "slicer": {
+      "*": {
+        "header": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 10, "fontColor": { "solid": { "color": "#1F6F54" } } }],
+        "items": [{ "fontFamily": "Segoe UI", "fontSize": 10 }]
+      }
+    },
+    "gauge": {
+      "*": {
+        "dataPoint": [{ "fill": { "solid": { "color": "#1F6F54" } }, "target": { "solid": { "color": "#C8553D" } } }],
+        "calloutValue": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 22, "color": { "solid": { "color": "#1C2321" } } }]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "grid": [{ "gridHorizontal": true, "gridHorizontalColor": { "solid": { "color": "#EEF1ED" } }, "gridVertical": false, "rowPadding": 4 }],
+        "columnHeaders": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 10, "backColor": { "solid": { "color": "#E3F1EA" } }, "fontColor": { "solid": { "color": "#1C2321" } } }],
+        "values": [{ "fontFamily": "Segoe UI", "fontSize": 10, "backColorSecondary": { "solid": { "color": "#FAFBF9" } } }]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "grid": [{ "gridHorizontal": true, "gridHorizontalColor": { "solid": { "color": "#EEF1ED" } }, "gridVertical": false, "rowPadding": 4 }],
+        "columnHeaders": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 10, "backColor": { "solid": { "color": "#E3F1EA" } }, "fontColor": { "solid": { "color": "#1C2321" } } }],
+        "rowHeaders": [{ "fontFamily": "Segoe UI Semibold", "fontSize": 10 }],
+        "values": [{ "fontFamily": "Segoe UI", "fontSize": 10 }]
+      }
+    },
+    "lineChart": {
+      "*": {
+        "lineStyles": [{ "strokeWidth": 2.5, "showMarker": false }],
+        "legend": [{ "show": true, "position": "Top", "fontSize": 9 }]
+      }
+    },
+    "clusteredColumnChart": {
+      "*": {
+        "legend": [{ "show": true, "position": "Top", "fontSize": 9 }],
+        "valueAxis": [{ "gridlineShow": true, "gridlineColor": { "solid": { "color": "#EEF1ED" } } }]
+      }
+    },
+    "clusteredBarChart": {
+      "*": {
+        "labels": [{ "show": true, "fontSize": 9 }],
+        "valueAxis": [{ "gridlineShow": false }]
+      }
+    },
+    "donutChart": {
+      "*": {
+        "legend": [{ "show": true, "position": "Right", "fontSize": 9 }],
+        "labels": [{ "show": true, "labelStyle": "Percent of total", "fontSize": 9 }]
+      }
+    }
+  }
+}

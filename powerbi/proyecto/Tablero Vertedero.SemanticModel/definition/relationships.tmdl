@@ -1,0 +1,81 @@
+relationship be6708e0-3c48-479a-8846-eeda77259211
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactAlarmas.fecha_inicio
+	toColumn: LocalDateTable_fafc1acb-b8a7-4678-a107-126e149420bb.Date
+
+relationship 734855a7-7e61-4fcf-be4f-bac2c0eca195
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactAlarmas.fecha_fin
+	toColumn: LocalDateTable_bd02d865-2c84-4b68-b3d6-e080cb21624a.Date
+
+relationship b9dfd043-d96b-4d04-ab1a-2f5f83f7f8a9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactEventos.fecha_hora
+	toColumn: LocalDateTable_d4a3ecba-b699-44d8-a7f0-677173ea2703.Date
+
+relationship c7fae6d8-b7d5-43d7-a95a-dd11b6a2bad9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactLecturas.fecha_hora
+	toColumn: LocalDateTable_9203e62f-c0b9-413d-bcd7-3f4c08dbc414.Date
+
+relationship ad67f18a-0e8c-4d3f-8deb-5f6e60213536
+	fromColumn: FactAlarmas.fecha_key
+	toColumn: DimFecha.fecha_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship f32ea3cf-9672-460d-b9ee-4dcd2eefd954
+	fromColumn: FactAlarmas.hora_key
+	toColumn: DimHora.hora_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 04346aa9-c41d-4ced-a0db-f1845ccbbb53
+	fromColumn: FactEventos.caneca_key
+	toColumn: DimCaneca.caneca_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 006af556-c0c9-410b-8b9b-4cbbe44172d1
+	fromColumn: FactEventos.fecha_key
+	toColumn: DimFecha.fecha_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship c7d83318-8cd6-4c14-bb50-3b5ca81f3a8a
+	isActive: false
+	fromColumn: FactEventos.hora_key
+	toColumn: DimHora.hora_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 02f02184-ce41-47e5-aedc-cdf4eebcb51b
+	fromColumn: FactEventos.tipo_evento_key
+	toColumn: DimTipoEvento.tipo_evento_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 6e87a4e2-e742-4b10-a6ea-48e7dcec637a
+	fromColumn: FactLecturas.caneca_key
+	toColumn: DimCaneca.caneca_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 9586d6dc-645d-4398-a6db-8e864078d474
+	fromColumn: FactLecturas.estado_key
+	toColumn: DimEstadoLlenado.estado_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship cd9eb599-d685-42a2-b941-3f360e2df3ec
+	fromColumn: FactLecturas.fecha_key
+	toColumn: DimFecha.fecha_key
+
+	annotation PBI_IsFromSource = FS
+
+relationship 3e615d08-7bc6-4feb-8b72-33f5cd71a2d1
+	fromColumn: FactLecturas.hora_key
+	toColumn: DimHora.hora_key
+
+	annotation PBI_IsFromSource = FS
+

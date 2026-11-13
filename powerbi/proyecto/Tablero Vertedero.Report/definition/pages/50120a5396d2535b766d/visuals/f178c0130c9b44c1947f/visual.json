@@ -1,0 +1,126 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "f178c0130c9b44c1947f",
+  "position": {
+    "x": 440.0,
+    "y": 438,
+    "z": 1000,
+    "height": 150,
+    "width": 816.0,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "% lecturas válidas"
+                }
+              },
+              "queryRef": "Medidas.% lecturas válidas",
+              "nativeQueryRef": "% lecturas válidas",
+              "displayName": "Lecturas válidas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Alarmas"
+                }
+              },
+              "queryRef": "Medidas.Alarmas",
+              "nativeQueryRef": "Alarmas",
+              "displayName": "Alarmas conjuntas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Horas en alarma"
+                }
+              },
+              "queryRef": "Medidas.Horas en alarma",
+              "nativeQueryRef": "Horas en alarma",
+              "displayName": "Horas en alarma"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Peso actual (g)"
+                }
+              },
+              "queryRef": "Medidas.Peso actual (g)",
+              "nativeQueryRef": "Peso actual (g)",
+              "displayName": "Peso simulado actual (g)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Calidad de los datos y alarmas'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Todo el histórico cargado'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,32 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DimCaneca","DimEstadoLlenado","DimFecha","DimHora","DimTipoEvento","FactAlarmas","FactEventos","FactLecturas","Medidas"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DimCaneca
+ref table DimEstadoLlenado
+ref table DimFecha
+ref table DateTableTemplate_09bb06a0-5062-49c7-b496-cf5c00cb8512
+ref table DimHora
+ref table DimTipoEvento
+ref table FactAlarmas
+ref table LocalDateTable_fafc1acb-b8a7-4678-a107-126e149420bb
+ref table LocalDateTable_bd02d865-2c84-4b68-b3d6-e080cb21624a
+ref table FactEventos
+ref table LocalDateTable_d4a3ecba-b699-44d8-a7f0-677173ea2703
+ref table FactLecturas
+ref table LocalDateTable_9203e62f-c0b9-413d-bcd7-3f4c08dbc414
+ref table Medidas
+
+ref cultureInfo en-US
+

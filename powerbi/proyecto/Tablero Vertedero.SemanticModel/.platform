@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Tablero Vertedero"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "56b73d7e-86fe-41b6-8a35-e61f6b6513af"
+  }
+}

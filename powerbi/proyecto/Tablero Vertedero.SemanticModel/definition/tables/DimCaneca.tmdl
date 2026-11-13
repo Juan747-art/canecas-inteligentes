@@ -1,0 +1,88 @@
+table DimCaneca
+	lineageTag: cf774e4b-74de-423c-ba73-2a0da0a14987
+
+	column caneca_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 1188e7db-5a78-4af4-846b-6784f2392a8c
+		summarizeBy: none
+		sourceColumn: caneca_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_caneca
+		dataType: int64
+		formatString: 0
+		lineageTag: 466a9d0d-e792-4bcb-9066-bbffd2e2c764
+		summarizeBy: sum
+		sourceColumn: id_caneca
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre
+		dataType: string
+		lineageTag: 3ad0a492-da38-4961-80ee-4e766d351616
+		summarizeBy: none
+		sourceColumn: nombre
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_residuo
+		dataType: string
+		lineageTag: 26aeb9a6-9f99-497a-9fc1-d15bc4f94f7e
+		summarizeBy: none
+		sourceColumn: tipo_residuo
+
+		annotation SummarizationSetBy = Automatic
+
+	column color
+		dataType: string
+		lineageTag: 1d0ab321-8dc6-44a8-a64e-95ba4404f4d5
+		summarizeBy: none
+		sourceColumn: color
+
+		annotation SummarizationSetBy = Automatic
+
+	column pin_ir
+		dataType: string
+		lineageTag: 3b13bc9b-4a65-4e78-ab02-fe0dc150ee96
+		summarizeBy: none
+		sourceColumn: pin_ir
+
+		annotation SummarizationSetBy = Automatic
+
+	column pin_servo
+		dataType: string
+		lineageTag: 57165565-786a-4a92-a1df-db3aaa8b26c5
+		summarizeBy: none
+		sourceColumn: pin_servo
+
+		annotation SummarizationSetBy = Automatic
+
+	column pin_xshut_laser
+		dataType: string
+		lineageTag: 4e49beaa-2f6d-4852-880a-7eca3886c775
+		summarizeBy: none
+		sourceColumn: pin_xshut_laser
+
+		annotation SummarizationSetBy = Automatic
+
+	column direccion_i2c
+		dataType: string
+		lineageTag: 9c40c28c-df73-4169-8244-30b9df4eed38
+		summarizeBy: none
+		sourceColumn: direccion_i2c
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCaneca = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "VertederoDW"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "DimCaneca"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+
